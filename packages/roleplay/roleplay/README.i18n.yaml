@@ -1,0 +1,70 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/roleplay/roleplay/README.md
+/:
+  en: a365e085633a7518
+  zh: f185a039b51bedfe
+/deepseek-ai-dsh-roleplay:
+  en: bb15662f40675777
+  zh: 84159ab798dedd6e
+/deepseek-ai-dsh-roleplay/summary:
+  en: 017191ff3d04c91e
+  zh: f37acc6c028a5416
+/deepseek-ai-dsh-roleplay/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 996b9d8f46848ed9
+/deepseek-ai-dsh-roleplay/use-this-package:
+  en: 3f4235110dc95e71
+  zh: 546d07b90b830688
+/deepseek-ai-dsh-roleplay/use-this-package/character-cards:
+  en: c3242936217a270b
+  zh: a912e3272e541ac1
+/deepseek-ai-dsh-roleplay/use-this-package/configuration:
+  en: bf870aad5ecf5a58
+  zh: 5b842e39d73ecd17
+/deepseek-ai-dsh-roleplay/use-this-package/editing-and-history:
+  en: 29657bd58e7d178a
+  zh: 1e74a4dc7bb16c0a
+/deepseek-ai-dsh-roleplay/understand-the-implementation:
+  en: aa3756f78150e351
+  zh: cfd6308545eec88c
+/deepseek-ai-dsh-roleplay/further-exploration:
+  en: 7cda1ab093258216
+  zh: 4cfd09ea20d1fc7b
+/deepseek-ai-dsh-roleplay/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/deepseek-ai-dsh-roleplay/model-experience/character-system-prompt:
+  en: cdbfda2d5f9dde51
+  zh: e108a4d07ec1c07a
+/deepseek-ai-dsh-roleplay/model-experience/character-system-prompt/what-the-model-sees:
+  en: c404815342f12bf3
+  zh: 8224af2dacf10436
+/deepseek-ai-dsh-roleplay/model-experience/character-system-prompt/what-the-model-sees/fixed-character-guidance:
+  en: cbeff517bb845c51
+  zh: c8aa786a9ce9b82f
+/deepseek-ai-dsh-roleplay/model-experience/character-system-prompt/token-effect:
+  en: eb41b0b5d0c9f50e
+  zh: 566a09d3ab05e825
+/deepseek-ai-dsh-roleplay/model-experience/character-system-prompt/kv-cache-effect:
+  en: e5c86cdbba8440bf
+  zh: a3b04839b654a3f4
+/deepseek-ai-dsh-roleplay/model-experience/roleplay-tool-schemas-and-evidence:
+  en: dc676494f8840fe5
+  zh: 9741ddd253b26ba2
+/deepseek-ai-dsh-roleplay/model-experience/roleplay-tool-schemas-and-evidence/what-the-model-sees:
+  en: 57e1aea58ec9cd6e
+  zh: 6fac98c30ce7eaed
+/deepseek-ai-dsh-roleplay/model-experience/roleplay-tool-schemas-and-evidence/token-effect:
+  en: 915cc31947fb959d
+  zh: cb4e6075c9a56341
+/deepseek-ai-dsh-roleplay/model-experience/roleplay-tool-schemas-and-evidence/kv-cache-effect:
+  en: c792b20d8c8ad6a7
+  zh: f79925e5df66a91b
+/deepseek-ai-dsh-roleplay/known-limitations-and-deferred-work:
+  en: a3b05bc03b63baee
+  zh: 2cada95d91299997
+/deepseek-ai-dsh-roleplay/known-limitations-and-deferred-work/dev-note:
+  en: d70162945d300a62
+  zh: 16eaf12c33245860

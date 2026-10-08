@@ -28,6 +28,8 @@ export interface SessionListEntry {
   /** Coarse durable origin for navigation filtering; not a continuation capability. */
   origin?: 'subagent'
   cwd?: string
+  /** Recorded preset for navigation even without cached projections. */
+  agentPreset?: string
   /** Current host-computed projection values for list consumers. */
   projectionValues?: Readonly<Partial<SessionProjectionMap>>
   /** Lineage indent depth: root = 0; the UI just multiplies by the indent width. */

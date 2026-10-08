@@ -9,8 +9,17 @@
   en: 6cc2cd9ced70bb09
   zh: 1c0e6cb4ba2ed637
 /tool-schema-catalog/tool-package-map:
-  en: 75120ef94b3c2830
-  zh: c5db28dd6853e91a
+  en: 14cd41cfdb4d0b74
+  zh: 4b63ea92eb49ce41
+/tool-schema-catalog/deepseek-ai-dsh-roleplay:
+  en: 974be65b186f3eae
+  zh: 974be65b186f3eae
+/tool-schema-catalog/deepseek-ai-dsh-roleplay/roleplay-read:
+  en: 7350335d6486f110
+  zh: 04daf2b090704b0c
+/tool-schema-catalog/deepseek-ai-dsh-roleplay/roleplay-update:
+  en: 38839bfbe47b7286
+  zh: 038d173c6201e784
 /tool-schema-catalog/deepseek-ai-dsh-plugin-manager:
   en: e0143916bb634762
   zh: e0143916bb634762

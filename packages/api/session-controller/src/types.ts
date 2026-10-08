@@ -184,6 +184,8 @@ export interface SessionSummary {
   readonly parentSessionId?: SessionId
   readonly origin?: 'subagent'
   readonly cwd?: string
+  /** Header preset available even when the projection cache is absent. */
+  readonly agentPreset?: string
   readonly projections?: SessionProjectionHints
 }
 

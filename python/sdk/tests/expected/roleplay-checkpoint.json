@@ -1,0 +1,11 @@
+{
+  "final_response": "Tea is ready.",
+  "checkpoint": {
+    "type": "roleplay/checkpoint",
+    "data": {
+      "profileId": "character-profile",
+      "revision": 7,
+      "sessionId": "{{session:1}}"
+    }
+  }
+}

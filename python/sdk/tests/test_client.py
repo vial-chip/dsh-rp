@@ -13,6 +13,47 @@ from deepseek_harness import DeepSeekHarness, HarnessClient, HarnessConfig, Noti
 from deepseek_harness.errors import JsonRpcError
 
 
+def test_log_only_roleplay_checkpoint_does_not_add_assistant_text(tmp_path: Path) -> None:
+    script = tmp_path / "roleplay_runtime.py"
+    script.write_text(
+        """
+import json
+import sys
+for line in sys.stdin:
+    message = json.loads(line)
+    method = message["method"]
+    result = {}
+    if method == "initialize":
+        result = {"serverInfo": {"name": "roleplay-fixture", "version": "1"}, "protocolVersion": 1, "capabilities": {}}
+    elif method == "session/prompt":
+        session = message["params"]["sessionId"]
+        result = {"messageId": "input"}
+        events = [
+            {"type": "agent/inbox/spliced", "data": {"target": "next-turn", "start": 0, "inserted": [{"id": "input"}]}},
+            {"type": "assistant/message", "data": {"message": {"role": "assistant", "content": [{"type": "text", "text": "Tea is ready."}]}}},
+            {"type": "roleplay/checkpoint", "data": {"profileId": "character-profile", "revision": 7, "sessionId": session}},
+            {"type": "turn/end", "data": {"turn": 1, "reason": {"kind": "completed"}}},
+        ]
+        for event in events:
+            print(json.dumps({"jsonrpc": "2.0", "method": "session.event", "params": {"sessionId": session, "event": event}}), flush=True)
+        print(json.dumps({"jsonrpc": "2.0", "method": "session.status", "params": {"sessionId": session, "status": "idle"}}), flush=True)
+    print(json.dumps({"jsonrpc": "2.0", "id": message["id"], "result": result}), flush=True)
+    if method == "shutdown":
+        break
+""".strip(), encoding="utf-8"
+    )
+    with DeepSeekHarness(_launch_args=(sys.executable, str(script)), cwd=str(tmp_path)) as harness:
+        result = harness.run("Make tea", session_id="character-session")
+    checkpoint = next(event for event in result.events if event["type"] == "roleplay/checkpoint")
+    assert checkpoint["data"]["sessionId"] == result.session_id
+    actual = {
+        "final_response": result.final_response,
+        "checkpoint": {"type": checkpoint["type"], "data": {**checkpoint["data"], "sessionId": "{{session:1}}"}},
+    }
+    expected = Path(__file__).with_name("expected") / "roleplay-checkpoint.json"
+    assert actual == json.loads(expected.read_text(encoding="utf-8"))
+
+
 def test_high_level_sdk_runs_turn_and_preserves_auto_review_errors(tmp_path: Path) -> None:
     script = tmp_path / "fake_runtime.py"
     env_dump = tmp_path / "env.json"

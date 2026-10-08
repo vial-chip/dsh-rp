@@ -241,6 +241,7 @@ function sessionVisible(
   archived: ReadonlySet<SessionId>,
   archivedFilter: ArchivedFilter,
 ): boolean {
+  if (session.agentPreset === 'roleplay' || session.projectionValues?.agentPreset === 'roleplay') return false
   if (session.origin === 'subagent') return false
   if (session.blank && session.id !== current) return false
   switch (archivedFilter) {

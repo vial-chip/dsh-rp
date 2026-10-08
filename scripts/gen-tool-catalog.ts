@@ -7,11 +7,22 @@
  */
 
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { basename, resolve } from 'node:path'
 import { Context } from '@deepseek-ai/cordis'
 import LlmRuntime from '@deepseek-ai/dsh-llm'
 import type { ToolSchema } from '@deepseek-ai/dsh-llm'
 import AgentRegistry from '@deepseek-ai/dsh-agent'
+import AgentLoop from '@deepseek-ai/dsh-agent-loop'
+import Storage from '@deepseek-ai/dsh-storage'
+import * as StorageJson from '@deepseek-ai/dsh-storage-json'
+import * as StorageDomain from '@deepseek-ai/dsh-storage-domain'
+import Roleplay from '@deepseek-ai/dsh-roleplay'
+import * as RoleplayRuntime from '@deepseek-ai/dsh-roleplay/runtime'
+import { brandString } from '@deepseek-ai/dsh-brand'
+import type { RoleplayOperationId } from '@deepseek-ai/dsh-roleplay/types'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import { createScope } from '@deepseek-ai/dsh-scope'
 import SessionStore, { SessionId } from '@deepseek-ai/dsh-session'
@@ -184,6 +195,38 @@ export interface ToolPackage {
  * guard proves it is exhaustive against the on-disk glob.
  */
 const TOOL_PACKAGES: ToolPackage[] = [
+  {
+    pkg: '@deepseek-ai/dsh-roleplay',
+    dir: 'roleplay',
+    source: 'packages/roleplay/roleplay/src/runtime.ts',
+    requires: ['ctx.roleplay', 'ctx.sessionQuery', 'ctx.sessionProjections', 'owning roleplay Agent'],
+    writes: ['tool/call', 'tool/result', 'roleplay/checkpoint', 'roleplay profile revisions'],
+    async mount(ctx) {
+      const directory = await mkdtemp(join(tmpdir(), 'dsh-roleplay-tool-catalog-'))
+      ctx.effect(() => () => rm(directory, { recursive: true, force: true }))
+      await ctx.plugin(SessionStore)
+      await ctx.plugin(AgentRegistry)
+      await ctx.plugin(LlmRuntime)
+      await ctx.plugin(AgentLoop, { maxParallelToolCalls: 4, agents: [] })
+      await ctx.plugin(SqliteSessionQueryEngine, { path: ':memory:', openAt: 'never' })
+      await ctx.plugin(Storage)
+      await ctx.plugin(StorageJson, { root: directory })
+      await ctx.plugin(StorageDomain, { backend: 'json' })
+      await ctx.plugin(Roleplay, { cardRoots: [], maxProfileBytes: 67108864, maxSelectedMemories: 24, maxEvidenceMessages: 24 })
+      const profile = await ctx.roleplay.store.create(await ctx.roleplay.cards.load('lin'), { name: 'Player', appearance: '', background: '' }, 'Catalog')
+      const sessionId = SessionId('roleplay-tool-catalog')
+      await ctx.roleplay.store.addConversation(profile.id, { sessionId, reply: 0, actor: 'user', operation: brandString<RoleplayOperationId>('catalog-scene') })
+      const handle = await ctx.agents.create({ sessionId, meta: { agentPreset: 'roleplay' },
+        agentOptions: { provider: 'catalog', model: 'catalog' }, setup: async (inner) => { await inner.plugin(RoleplayRuntime) } })
+      catalogChildScopes.set(ctx, handle.agent)
+    },
+    scope: (ctx) => {
+      const agent = catalogChildScopes.get(ctx)
+      if (!agent) throw new Error('Roleplay catalog Agent was not created')
+      return agent
+    },
+    note: 'These tools are available only in profile-owned roleplay conversations. Memory writes cite conversation user-message evidence; metric writes accept deltas, while administrative edits own absolute values.',
+  },
   {
     pkg: '@deepseek-ai/dsh-plugin-manager',
     dir: 'plugin-manager',

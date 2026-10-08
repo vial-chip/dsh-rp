@@ -12,6 +12,7 @@ export type AgentPresetSettingsKey =
   | 'nav'
   | 'sectionIntro'
   | 'setDefault'
+  | 'roleplayOpen'
   | 'view'
   | 'presetStandardName'
   | 'presetStandardDescription'
@@ -21,6 +22,8 @@ export type AgentPresetSettingsKey =
   | 'presetMinimalDescription'
   | 'presetCordisName'
   | 'presetCordisDescription'
+  | 'presetRoleplayName'
+  | 'presetRoleplayDescription'
   | 'inUse'
   | 'noDescription'
   | 'brokenBadge'
@@ -36,6 +39,8 @@ export type AgentPresetSettingsKey =
 
 /** English copy. */
 export const en: Record<AgentPresetSettingsKey, string> = {
+  presetRoleplayName: 'Roleplay',
+  presetRoleplayDescription: 'Share everyday life with a character, with independent scenes and shared memories.',
   ...guideEn,
   builtInGroup: 'Built-in', customGroup: 'Custom',
   sectionIntro: 'Choose the agent’s tools and how it works. Use Standard mode for everyday tasks, or Creator mode to add capabilities to DSH.',
@@ -45,6 +50,7 @@ export const en: Record<AgentPresetSettingsKey, string> = {
   nav: 'Agent presets',
 
   setDefault: 'Set as new task default',
+  roleplayOpen: 'Choose a character profile',
   view: 'View configuration',
 
   presetStandardName: 'Standard mode',
@@ -81,6 +87,8 @@ export const en: Record<AgentPresetSettingsKey, string> = {
 
 /** Simplified Chinese copy. */
 export const zh: Record<AgentPresetSettingsKey, string> = {
+  presetRoleplayName: '角色扮演',
+  presetRoleplayDescription: '与角色一起体验日常生活，保留独立场景和共享记忆。',
   ...guideZh,
   builtInGroup: '内置', customGroup: '自定义',
   sectionIntro: '选择 Agent 的工具和工作方式。日常任务用「标准模式」，扩展 DSH 的能力用「创造模式」。',
@@ -90,6 +98,7 @@ export const zh: Record<AgentPresetSettingsKey, string> = {
   nav: 'Agent 预设',
 
   setDefault: '设为新任务默认',
+  roleplayOpen: '选择角色档案',
   view: '查看配置',
 
   presetStandardName: '标准模式',

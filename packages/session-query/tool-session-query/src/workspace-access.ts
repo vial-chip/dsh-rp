@@ -61,6 +61,7 @@ function callerOf(exec: ToolRunContext, ctx: Context): Caller {
       'SESSION_QUERY_TOOL_MISSING_AGENT',
     )
   }
+  if (agent.session.header.agentPreset === 'roleplay') throw serviceBoundary.unauthorizedTarget()
   return {
     id: agent.session.id,
     header: agent.session.header,
@@ -86,7 +87,8 @@ async function authorizeTarget(
       { kind: 'id', values: [target] },
       { kind: 'cwd', values: [cwd] },
     ], signal))
-  if (records.length !== 1) throw serviceBoundary.unauthorizedTarget()
+  const record = records[0]
+  if (records.length !== 1 || record === undefined || !headerAuthorized(record.header, caller)) throw serviceBoundary.unauthorizedTarget()
 }
 
 function recordAuthorized(record: SessionRecord, caller: Caller): boolean {
@@ -94,6 +96,7 @@ function recordAuthorized(record: SessionRecord, caller: Caller): boolean {
 }
 
 function headerAuthorized(header: SessionHeader, caller: Caller): boolean {
+  if (header.agentPreset === 'roleplay' || caller.header.agentPreset === 'roleplay') return false
   if (header.id === caller.id) return header.cwd === caller.header.cwd
   return caller.header.cwd !== undefined && header.cwd === caller.header.cwd
 }

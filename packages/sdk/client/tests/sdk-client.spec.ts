@@ -239,6 +239,17 @@ describe('DeepSeekHarness', () => {
     await harness.close()
   })
 
+  it('retains log-only roleplay checkpoints without adding assistant text', async () => {
+    const harness = harnessWith({ FAKE_TEXT: 'Tea is ready.', FAKE_ROLEPLAY_CHECKPOINT: '1' })
+    const result = await harness.run('Make tea')
+    const checkpoint = result.events.find(event => event.type === 'roleplay/checkpoint')
+    const actual = { finalResponse: result.finalResponse,
+      checkpoint: checkpoint && { type: checkpoint.type, data: { ...checkpoint.data, sessionId: '{{session:1}}' } } }
+    const expected = await readFile(new URL('./expected/roleplay-checkpoint.json', import.meta.url), 'utf8')
+    expect(actual).toEqual(JSON.parse(expected))
+    expect(checkpoint?.data.sessionId).toBe(result.sessionId)
+  })
+
   it('keeps events root-scoped while streaming notifications for the session tree', async () => {
     const harness = harnessWith({ FAKE_SUBAGENT: '1' })
     const seen: HarnessNotification[] = []

@@ -422,7 +422,7 @@ export class ApiSessionAgentController {
     sessionId: SessionId,
     observation: SessionObservation,
   ): Promise<Agent> {
-    if (observation.header.id !== sessionId || observation.header.cwd === undefined) {
+    if (observation.header.id !== sessionId || (observation.header.cwd === undefined && observation.header.agentPreset !== 'roleplay')) {
       throw new ApiSessionNotFound(`session "${sessionId}" not found`)
     }
     if (hasApiSessionSubagentOwner(this.ctx, { header: observation.header }, undefined)) {

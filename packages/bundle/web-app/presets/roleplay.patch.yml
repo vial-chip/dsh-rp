@@ -1,0 +1,19 @@
+- insert:
+    - id: roleplay
+      name: '@deepseek-ai/dsh-roleplay'
+      config:
+        cardRoots:
+          - !!js dshHomePath('characters')
+        maxProfileBytes: 67108864
+        maxSelectedMemories: 24
+        maxEvidenceMessages: 24
+    - id: roleplay-controller
+      name: '@deepseek-ai/dsh-roleplay/controller'
+    - id: preset-roleplay
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: roleplay
+        order: 5
+        plugins:
+          - id: roleplay-runtime
+            name: '@deepseek-ai/dsh-roleplay/runtime'

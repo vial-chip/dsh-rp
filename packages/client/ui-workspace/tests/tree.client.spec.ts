@@ -74,6 +74,15 @@ describe('owningGroupKey', () => {
 })
 
 describe('Session ordering', () => {
+  it.each([false, true])('keeps retained roleplay conversations out of work navigation (cached projection=%s)', (cached) => {
+    const sessions = withMain(list(summary('work', 10), {
+      ...summary('character', 20), agentPreset: 'roleplay', ...(cached ? { projectionValues: { agentPreset: 'roleplay' } } : {}),
+    }), sid('character'))
+    expect(deriveFlat(sessions, sessions.ids, noRows, noAttention).map(row => row.id)).toEqual([sid('work')])
+    const groups = deriveGroups(sessions, [workspace('main', ['work', 'character'])], noRows, noAttention, view(['main']))
+    expect(groups.flatMap(group => group.sessions.map(row => row.id))).toEqual([sid('work')])
+  })
+
   it.each(['workspace', 'ungrouped', 'flat'] as const)('keeps the current New Session before pins in %s', (mode) => {
     const sessions = withMain(list(
       summary('pin', 30),

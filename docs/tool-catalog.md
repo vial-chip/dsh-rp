@@ -15,6 +15,7 @@ This table connects model-visible tool names to the plugin package and service s
 
 | Tool package | Model-visible names | Requires | Writes / affects | Shipped aliases | Deployment note |
 | --- | --- | --- | --- | --- | --- |
+| `@deepseek-ai/dsh-roleplay` | `roleplay_read`, `roleplay_update` | `ctx.roleplay`, `ctx.sessionQuery`, `ctx.sessionProjections`, `owning roleplay Agent` | `tool/call`, `tool/result`, `roleplay/checkpoint`, `roleplay profile revisions` | - | These tools are available only in profile-owned roleplay conversations. Memory writes cite conversation user-message evidence; metric writes accept deltas, while administrative edits own absolute values. |
 | `@deepseek-ai/dsh-plugin-manager` | `plugin_manager` | `ctx.tools`, `ctx.pluginManager`, `ctx.sandboxPolicy` | `tool/call`, `tool/result`, `user/message` | - | - |
 | `@deepseek-ai/dsh-mcp-resources` | `list_mcp_resource_templates`, `list_mcp_resources`, `read_mcp_resource` | `ctx.tools`, `ctx.mcpResources` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-experimental-browser-use-stagehand-native` | `stagehand_act`, `stagehand_extract`, `stagehand_navigate`, `stagehand_observe`, `stagehand_screenshot`, `stagehand_tabs` | `ctx.browserUse`, `ctx.agents`, `ctx.tools`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | - |
@@ -45,6 +46,88 @@ This table connects model-visible tool names to the plugin package and service s
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`, `ctx.workflowEngine`, `ctx.systemPrompt`, `a calling Agent (exec.agent parents the script children)` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-workspace-dependencies` | `load_workspace_dependencies` | `ctx.tools` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`, `web_search` | `ctx.tools`, `ctx.web`, `ctx.systemPrompt` | `tool/call`, `tool/result` | - | web_search and web_fetch keep provider selection behind ctx.web so model-visible schemas stay stable across backend swaps. |
+
+<a id="deepseek-aidsh-roleplay"></a>
+
+## `@deepseek-ai/dsh-roleplay`
+
+### `roleplay_read`
+
+Read the current scene, relationship and selected memories. Supply query to search all active memories in this character profile.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+Source: [`packages/roleplay/roleplay/src/runtime.ts`](../packages/roleplay/roleplay/src/runtime.ts)
+
+### `roleplay_update`
+
+Save AI scene fields, relationship deltas or a stable memory. Use the observed expectedRevision. Conflicts retain the current information. User corrections take precedence.
+
+```json
+{
+  "type": "object",
+  "required": [
+    "expectedRevision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "expectedRevision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "deltas": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "text",
+        "applicable",
+        "evidenceId"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "applicable": {
+          "type": "string"
+        },
+        "evidenceId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+```
+
+Source: [`packages/roleplay/roleplay/src/runtime.ts`](../packages/roleplay/roleplay/src/runtime.ts)
+
+These tools are available only in profile-owned roleplay conversations. Memory writes cite conversation user-message evidence; metric writes accept deltas, while administrative edits own absolute values.
 
 <a id="deepseek-aidsh-plugin-manager"></a>
 

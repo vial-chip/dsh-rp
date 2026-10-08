@@ -7,6 +7,10 @@ A service can be a core spine service, a swappable capability seam, a bundle/com
 
 ```mermaid
 flowchart LR
+  pkg_roleplay["roleplay"]
+  svc_roleplay["ctx.roleplay<br/>Independent character profiles and shared memories"]
+  svc_roleplayController["ctx.roleplayController<br/>Roleplay profile and history Remote controller"]
+  pkg_client_ui_roleplay["client-ui-roleplay"]
   pkg_hmr["hmr"]
   svc_hmr["ctx.hmr<br/>Serialized module and configuration reloads"]
   pkg_app_boot["app-boot"]
@@ -361,6 +365,8 @@ flowchart LR
   pkg_ptc_runtime --> svc_ptcRuntime
   pkg_ptc_runtime_node --> svc_ptcRuntime
   pkg_pwsh_local --> svc_shell
+  pkg_roleplay --> svc_roleplay
+  pkg_roleplay --> svc_roleplayController
   pkg_sandbox --> svc_sandbox
   pkg_sandbox_local --> svc_sandbox
   pkg_sandbox_policy --> svc_sandboxPolicy
@@ -483,6 +489,8 @@ flowchart LR
   svc_profileContext --> pkg_plugin_manager
   svc_ptcRuntime --> pkg_tools
   svc_ptcRuntime --> pkg_workflow_ptc
+  svc_roleplay --> pkg_roleplay
+  svc_roleplayController --> pkg_client_ui_roleplay
   svc_sandbox --> pkg_bash_sandbox
   svc_sandbox --> pkg_terminal_bash
   svc_sandboxPolicy --> pkg_bash_sandbox
@@ -571,6 +579,8 @@ flowchart LR
 
 | ctx key | Role | Owner | Implementations | Direct consumers | Companion plugins | Note |
 | --- | --- | --- | --- | --- | --- | --- |
+| `ctx.roleplay` | `core` | [`roleplay`](../packages/roleplay/roleplay) | - | [`roleplay`](../packages/roleplay/roleplay) | - | Owns immutable card bindings, revisioned profile state, scene ownership and durable lifecycle intents; scoped model tools and the Host controller consume this authority. |
+| `ctx.roleplayController` | `core` | [`roleplay`](../packages/roleplay/roleplay) | - | [`client-ui-roleplay`](../packages/client/ui-roleplay) | - | Publishes profile edits and explicit conversation continuation, archival, historical branching and selective reply compensation through the typed Remote namespace. |
 | `ctx.hmr` | `core` | [`hmr`](../packages/boot/hmr) | - | [`app-boot`](../packages/boot/app-boot) | - | Owns module and exact configuration watchers; application mutations share its queue and automatic reloads await the application file lock. |
 | `ctx.pluginRegistryProbe` | `core` | [`client-ui-plugin-manager`](../packages/client/ui-plugin-manager) | - | [`client-ui-plugin-manager`](../packages/client/ui-plugin-manager) | - | Races public registry responses on the Host; the Client owns the initial registry recommendation. |
 | `ctx.pluginManager` | `core` | [`plugin-manager`](../packages/boot/plugin-manager) | - | [`plugin-manager`](../packages/boot/plugin-manager), `ui-settings-plugin-inventory` | - | Shares profile package operations with the CLI and reports persisted and running state to Web and agent callers. |

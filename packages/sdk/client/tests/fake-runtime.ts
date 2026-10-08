@@ -8,6 +8,7 @@
  *
  * Script vocabulary (all optional):
  * - `FAKE_TEXT`: assistant text for each turn (default `hello from fake runtime`).
+ * - `FAKE_ROLEPLAY_CHECKPOINT`: retain a log-only roleplay revision in the run's event projection.
  * - `FAKE_STATUS`: the `session.finished` status (default `ok`).
  * - `FAKE_REASON_KIND`: the `session.finished` reason kind (default `completed`; `none` omits the reason).
  * - `FAKE_ABORT_REASON_KIND`: nested cause for an `aborted` turn (default `user`).
@@ -164,6 +165,9 @@ function runTurn(sessionId: string): void {
     stream: env.FAKE_EMPTY_MESSAGE !== undefined ? usageOnlyStream() : textStream(text),
   })
   const reasonKind = env.FAKE_REASON_KIND ?? 'completed'
+  if (env.FAKE_ROLEPLAY_CHECKPOINT !== undefined) {
+    event(sessionId, 'roleplay/checkpoint', { profileId: 'character-profile', revision: 7, sessionId })
+  }
   if (reasonKind !== 'none') {
     if (env.FAKE_MALFORMED_REASON === 'no-data') {
       notify('session.event', { sessionId, event: { type: 'turn/end', seq: seq++, time: 0 } })

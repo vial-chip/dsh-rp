@@ -1,0 +1,12 @@
+.dialog { width: min(560px, 100%); max-height: 100%; }
+.dialogContent { min-height: 0; overflow: auto; }
+.panel { display: grid; min-width: 0; gap: 12px; padding: 16px; color: var(--dsw-alias-label-primary); font-size: 13px; overflow: auto; }
+.panel h3 { margin: 8px 0 0; font-weight: 500; font-size: var(--dsh-content-font-size-secondary, 13px); }
+.panel p { margin: 0; }
+.panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.field { display: flex; align-items: end; gap: 8px; }
+.field label { display: grid; min-width: 0; flex: 1; gap: 4px; }
+.field button { flex: none; white-space: nowrap; }
+.memory { display: grid; gap: 8px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: var(--dsw-radius-md); padding: 12px; }
+.error { color: var(--dsw-alias-label-primary); }

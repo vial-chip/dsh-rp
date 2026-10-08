@@ -1,0 +1,46 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/client/ui-roleplay/README.md
+/:
+  en: 9dda8ed20c8db8c3
+  zh: 3d7b1bc193b0a0c1
+/deepseek-ai-dsh-client-ui-roleplay:
+  en: b8fd3a8b7ae7e00d
+  zh: 15220b46d6725f7f
+/deepseek-ai-dsh-client-ui-roleplay/summary:
+  en: 56eb7503f25f8a3f
+  zh: c27b5c3294c26fa2
+/deepseek-ai-dsh-client-ui-roleplay/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 996b9d8f46848ed9
+/deepseek-ai-dsh-client-ui-roleplay/use-this-package:
+  en: a02c09e2b115faad
+  zh: 9f45fba4fde27825
+/deepseek-ai-dsh-client-ui-roleplay/understand-the-implementation:
+  en: 781f80e47476d307
+  zh: 5ae690be4fd78ce2
+/deepseek-ai-dsh-client-ui-roleplay/further-exploration:
+  en: 61994b6004644072
+  zh: f975bc061bb2d3be
+/deepseek-ai-dsh-client-ui-roleplay/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/deepseek-ai-dsh-client-ui-roleplay/model-experience/administrative-edits-and-explicit-input:
+  en: f3194ddf8d15412b
+  zh: ff2e0765abf0107d
+/deepseek-ai-dsh-client-ui-roleplay/model-experience/administrative-edits-and-explicit-input/what-the-model-sees:
+  en: ab2bdab9e496b9aa
+  zh: fd421a3f30a199b7
+/deepseek-ai-dsh-client-ui-roleplay/model-experience/administrative-edits-and-explicit-input/token-effect:
+  en: 9bd710e214dd11cd
+  zh: 491a9c00dbe1b554
+/deepseek-ai-dsh-client-ui-roleplay/model-experience/administrative-edits-and-explicit-input/kv-cache-effect:
+  en: 7b8ad3484dfae86d
+  zh: 50c67520482dd54c
+/deepseek-ai-dsh-client-ui-roleplay/known-limitations-and-deferred-work:
+  en: 864e5d4482bbdd1e
+  zh: ce92161f17ef3fa5
+/deepseek-ai-dsh-client-ui-roleplay/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 6c5f9788c6536776

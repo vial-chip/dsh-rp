@@ -1,0 +1,25 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/roleplay/README.md
+/:
+  en: 3e88128eec931c15
+  zh: 38a1b9263d096739
+/roleplay-character-conversations:
+  en: 94a78af3018d414a
+  zh: 6fcde52737b71859
+/roleplay-character-conversations/summary:
+  en: 0a2007e5d9736ef7
+  zh: a8393eb3d32bfe1f
+/roleplay-character-conversations/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: 9e89f9dba22c3993
+/roleplay-character-conversations/packages:
+  en: af55facf3b2cc3b4
+  zh: 1e0105b4443e42dc
+/roleplay-character-conversations/related-documentation:
+  en: 0f08cdebee36fd92
+  zh: aa02e0e6881f1467
+/roleplay-character-conversations/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 2f4ca37beb513c8c

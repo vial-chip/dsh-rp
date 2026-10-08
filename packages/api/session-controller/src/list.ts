@@ -140,7 +140,7 @@ export class ApiSessionList {
       const live = this.ctx.sessions.get(record.header.id)
       if (live !== undefined) {
         items.push(this.summaryFor(live))
-      } else if (record.header.cwd !== undefined) {
+      } else if (record.header.cwd !== undefined || record.header.agentPreset === 'roleplay') {
         cold.push(record.header)
       }
       if (performance.now() >= yieldDeadline) {
@@ -199,7 +199,7 @@ export class ApiSessionList {
       const visible = await provider.listSessions(signal)
       signal.throwIfAborted()
       const visibleIds = new Set(visible
-        .filter(record => record.header.cwd !== undefined)
+        .filter(record => record.header.cwd !== undefined && record.header.agentPreset !== 'roleplay')
         .map(record => record.header.id))
       if (visibleIds.size === 0) return { items: [], hasMore: false }
       const authorized: SessionSearchItem[] = []
@@ -352,10 +352,12 @@ function listFields(header: SessionHeader): {
   readonly parentSessionId?: SessionId
   readonly origin?: 'subagent'
   readonly cwd?: string
+  readonly agentPreset?: string
 } {
   return {
     ...(header.parentSession === undefined ? {} : { parentSessionId: header.parentSession }),
     ...(header.origin === undefined ? {} : { origin: header.origin }),
     ...(header.cwd === undefined ? {} : { cwd: header.cwd }),
+    ...(header.agentPreset === undefined ? {} : { agentPreset: header.agentPreset }),
   }
 }

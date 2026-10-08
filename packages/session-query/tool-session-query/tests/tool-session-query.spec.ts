@@ -591,6 +591,21 @@ describe('input validation and translation', () => {
 })
 
 describe('workspace authority and lineage redaction', () => {
+  it('rejects roleplay callers and roleplay targets even with the same work directory', async () => {
+    const mounted = await mount()
+    const target = mounted.ctx.sessions.create(SessionId('roleplay-target'), { meta: { cwd: '/work', agentPreset: 'roleplay' } })
+    openStep(target)
+    const denied = await mounted.call('session_trace', { session_id: target.id })
+    expect(errorCode(denied)).toBe('SESSION_QUERY_TOOL_UNAUTHORIZED')
+    expect(text(denied)).not.toContain('roleplay-target')
+    for (const [name, args] of [
+      ['session_trace', {}], ['session_event_read', { seq: 0 }], ['session_search', { query: 'private' }],
+    ] as const) {
+      expect(errorCode(await mounted.call(name, args, { agent: fakeAgent(target) }))).toBe('SESSION_QUERY_TOOL_UNAUTHORIZED')
+    }
+    expect(FakeQuery.sessionRequests).toEqual([])
+  })
+
   it('fails closed without an agent and for direct cross-workspace targets', async () => {
     const mounted = await mount()
     createSession(mounted.ctx, 'outside', '/outside')

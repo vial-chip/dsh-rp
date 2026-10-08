@@ -251,7 +251,7 @@ export class SessionHistoryController {
         signal,
         projectionMode: withProjections || address.kind === 'subagent' ? 'all' : 'none',
       })
-      if (observation.header.cwd === undefined) {
+      if (observation.header.cwd === undefined && observation.header.agentPreset !== 'roleplay') {
         observation[Symbol.dispose]()
         rejectNotFound(address)
       }

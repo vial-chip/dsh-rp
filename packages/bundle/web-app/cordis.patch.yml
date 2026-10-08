@@ -410,6 +410,8 @@
     # sessions created later. Absent a roster it renders nothing.
     - id: ui-agent-preset
       name: '@deepseek-ai/dsh-client-ui-agent-preset'
+    - id: ui-roleplay
+      name: '@deepseek-ai/dsh-client-ui-roleplay'
 
     - id: ui-settings-session-log
       name: '@deepseek-ai/dsh-client-ui-settings-session-log'

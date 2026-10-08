@@ -1,0 +1,86 @@
+{
+  "formatVersion": 2,
+  "roots": [
+    {
+      "key": "event:roleplay/checkpoint",
+      "kind": "event",
+      "event": "roleplay/checkpoint",
+      "surface": false,
+      "digest": "026d7018d6f929ad8d650c80ed10c755f938abdd0ca6fa94502cb902aa15e575",
+      "schema": {
+        "root": 0,
+        "nodes": [
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "data",
+                "type": 1,
+                "optional": false
+              },
+              {
+                "name": "ignorable",
+                "type": 4,
+                "optional": true
+              },
+              {
+                "name": "seq",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "time",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "type",
+                "type": 5,
+                "optional": false
+              }
+            ],
+            "indices": []
+          },
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "profileId",
+                "type": 2,
+                "optional": false
+              },
+              {
+                "name": "revision",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "sessionId",
+                "type": 2,
+                "optional": false
+              }
+            ],
+            "indices": []
+          },
+          {
+            "kind": "primitive",
+            "type": "string"
+          },
+          {
+            "kind": "primitive",
+            "type": "number"
+          },
+          {
+            "kind": "literal",
+            "value": true
+          },
+          {
+            "kind": "literal",
+            "value": "roleplay/checkpoint"
+          }
+        ]
+      }
+    }
+  ],
+  "types": []
+}

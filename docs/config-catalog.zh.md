@@ -2434,6 +2434,29 @@ export interface Config {
 ```
 <!-- END GENERATED config-catalog:@deepseek-ai/dsh-repeat-tool-reminder -->
 
+<!-- BEGIN GENERATED config-catalog:@deepseek-ai/dsh-roleplay -->
+<a id="deepseek-aidsh-roleplay"></a>
+
+## `@deepseek-ai/dsh-roleplay`
+
+- `inject`: `storageDomain`
+- `source`: [`packages/roleplay/roleplay/src/index.ts:17`](../packages/roleplay/roleplay/src/index.ts)
+
+```ts config-catalog
+/** Deployment-specific card discovery and capacity. */
+export interface Config {
+  /** Explicit roleplay skill roots, in addition to the bundled example card. */
+  cardRoots: string[]
+  /** Maximum encoded profile bytes, including immutable revision snapshots. */
+  maxProfileBytes: number
+  /** Maximum recent active memories included in one model request. */
+  maxSelectedMemories: number
+  /** Maximum recent user messages returned as evidence by roleplay_read. */
+  maxEvidenceMessages: number
+}
+```
+<!-- END GENERATED config-catalog:@deepseek-ai/dsh-roleplay -->
+
 <!-- BEGIN GENERATED config-catalog:@deepseek-ai/dsh-sandbox-local -->
 <a id="deepseek-aidsh-sandbox-local"></a>
 
@@ -4379,6 +4402,7 @@ export interface Config {
 | `@deepseek-ai/dsh-client-ui-plan` | — | [`packages/client/ui-plan/src/index.ts`](../packages/client/ui-plan/src/index.ts) |
 | `@deepseek-ai/dsh-client-ui-reference` | — | [`packages/client/ui-reference/src/index.ts`](../packages/client/ui-reference/src/index.ts) |
 | `@deepseek-ai/dsh-client-ui-renderer` | — | [`packages/client/ui-renderer/src/index.ts`](../packages/client/ui-renderer/src/index.ts) |
+| `@deepseek-ai/dsh-client-ui-roleplay` | — | [`packages/client/ui-roleplay/src/index.ts`](../packages/client/ui-roleplay/src/index.ts) |
 | `@deepseek-ai/dsh-client-ui-schedule` | — | [`packages/client/ui-schedule/src/index.ts`](../packages/client/ui-schedule/src/index.ts) |
 | `@deepseek-ai/dsh-client-ui-session` | — | [`packages/client/ui-session/src/index.ts`](../packages/client/ui-session/src/index.ts) |
 | `@deepseek-ai/dsh-client-ui-settings` | — | [`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts) |

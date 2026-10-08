@@ -1836,6 +1836,97 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'roleplay',
+    summary: 'Character profiles persist independently of workspaces and session logs.',
+    description: 'Character profiles persist independently of workspaces and session logs.',
+    methods: [
+      {
+        signature: 'readonly cards: RoleplayCards',
+        description: 'Explicit skill-format card catalog.',
+        parameters: [],
+      },
+    ],
+  },
+  {
+    key: 'roleplayController',
+    summary: 'Roleplay-only administrative Remote namespace.',
+    description: 'Roleplay-only administrative Remote namespace.',
+    methods: [
+      {
+        signature: '@Remote(\'cards\') cards(): Promise<CharacterCard[]>',
+        description: 'Discover roleplay cards only.',
+        parameters: [],
+        returns: 'Current local card snapshots.',
+      },
+      {
+        signature: '@Remote(\'profiles\') profiles(): CharacterProfile[]',
+        description: 'List independent portrayals and their conversations.',
+        parameters: [],
+        returns: 'Detached durable records.',
+      },
+      {
+        signature: '@Remote(\'read\') read(id: CharacterProfileId): CharacterProfile',
+        description: 'Read all saved state, memory sources, conflicts and revisions.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }],
+        returns: 'Detached record.',
+      },
+      {
+        signature: '@Remote(\'history\') async history(id: CharacterProfileId, sessionId: SessionId): Promise<RoleplayHistoryPoint[]>',
+        description: 'List visible historical messages for selecting a branch.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Owned conversation.' }],
+        returns: 'Message previews with exact log positions.',
+      },
+      {
+        signature: '@Remote(\'createProfile\') async createProfile(cardName: string, player: PlayerPersona, title: string): Promise<CharacterProfile>',
+        description: 'Create an independent portrayal bound to the current file version.',
+        parameters: [{ name: 'cardName', description: 'Local skill name.' }, { name: 'player', description: 'Player\'s fictional identity.' }, { name: 'title', description: 'Profile title.' }],
+        returns: 'Durable profile.',
+      },
+      {
+        signature: '@Remote(\'createConversation\') async createConversation(id: CharacterProfileId, opening?: string): Promise<SessionId>',
+        description: 'Start an independent scene in an existing portrayal.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'opening', description: 'Optional player-authored situation.' }],
+        returns: 'Published conversation identity.',
+      },
+      {
+        signature: '@Remote(\'edit\') async edit(id: CharacterProfileId, sessionId: SessionId, change: RoleplayUserChange): Promise<CharacterProfile>',
+        description: 'Apply administrative values without adding fictional dialogue.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Owned conversation.' }, { name: 'change', description: 'User corrections.' }],
+        returns: 'Durable profile.',
+      },
+      {
+        signature: '@Remote(\'applyCard\') async applyCard(id: CharacterProfileId, sessionId: SessionId): Promise<CharacterProfile>',
+        description: 'Explicitly update this portrayal\'s bound card version.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Owned conversation.' }],
+        returns: 'Profile with active memories awaiting review.',
+      },
+      {
+        signature: '@Remote(\'continue\') async continueConversation(id: CharacterProfileId, sessionId: SessionId): Promise<SessionId>',
+        description: 'Advance only after an explicit user continuation.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Owned conversation.' }],
+        returns: 'Accepted conversation identity.',
+      },
+      {
+        signature: '@Remote(\'archive\') async archive(id: CharacterProfileId, sessionId: SessionId, archived: boolean): Promise<CharacterProfile>',
+        description: 'Archive without deleting shared memories.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Conversation identity.' }, { name: 'archived', description: 'Desired marker.' }],
+        returns: 'Committed profile.',
+      },
+      {
+        signature: '@Remote(\'branch\') async branch(id: CharacterProfileId, sessionId: SessionId, atSeq: number): Promise<{ profileId: CharacterProfileId sessionId: SessionId }>',
+        description: 'Branch an exact log node into an independent portrayal.',
+        parameters: [{ name: 'id', description: 'Source profile.' }, { name: 'sessionId', description: 'Source conversation.' }, { name: 'atSeq', description: 'Selected event.' }],
+        returns: 'New portrayal and conversation.',
+      },
+      {
+        signature: '@Remote(\'undo\') async undo(id: CharacterProfileId, sessionId: SessionId, regenerate: boolean): Promise<SessionId>',
+        description: 'Replace the latest completed reply after selective data compensation. The original append-only Session remains archived.',
+        parameters: [{ name: 'id', description: 'Profile identity.' }, { name: 'sessionId', description: 'Source conversation.' }, { name: 'regenerate', description: 'Whether to replay its user input.' }],
+        returns: 'Replacement conversation in the same portrayal.',
+      },
+    ],
+  },
+  {
     key: 'sandbox',
     summary: 'Abstract process-sandbox service.',
     description: 'Abstract process-sandbox service. confine must return enforcing argv or fail closed at wrap or runner-execution time; silent unconfined passthrough is forbidden. Functional probes arbitrate multi-runner chains and may be skipped for a sole candidate, whose own refusal remains the fail-closed end.',
@@ -4757,6 +4848,22 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export interface ChangeResult {\n    changed: boolean;\n    application: \'applied\' | \'restart-required\' | \'overridden\' | \'failed\' | \'cancelled\';\n    stage: \'install\' | \'enable\' | \'remove\';\n    target: string;\n    enabled?: boolean;\n    error?: ManagementError;\n    warnings?: string[];\n    packageResult?: PackageResult;\n    bundle?: string;\n    version?: string;\n    pendingBuilds?: string[];\n    approvedBuilds?: string[];\n    registries?: Registry[];\n    failedAt?: \'registry\' | \'spec-host\';\n}',
   },
   {
+    name: 'CharacterCard',
+    declaration: 'export interface CharacterCard {\n    name: string;\n    description: string;\n    version: CharacterCardVersion;\n    content: string;\n    opening: string;\n    scene: Record<string, string>;\n    metrics: Record<string, RelationshipMetric>;\n}',
+  },
+  {
+    name: 'CharacterCardVersion',
+    declaration: 'export type CharacterCardVersion = Branded<\'CharacterCardVersion\'>;',
+  },
+  {
+    name: 'CharacterProfile',
+    declaration: 'export interface CharacterProfile {\n    id: CharacterProfileId;\n    title: string;\n    revision: number;\n    state: RoleplayState;\n    history: RoleplayRevision[];\n    conflicts: RoleplayConflict[];\n}',
+  },
+  {
+    name: 'CharacterProfileId',
+    declaration: 'export type CharacterProfileId = Branded<\'CharacterProfileId\'>;',
+  },
+  {
     name: 'ClientArtifactBaseline',
     declaration: 'export interface ClientArtifactBaseline {\n    readonly path: string;\n    readonly mtimeMs: number;\n    readonly ctimeMs: number;\n    readonly size: number;\n}',
   },
@@ -6033,6 +6140,10 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export interface PlatformSession {\n    readonly origin: string;\n    readonly token: string;\n    readonly userId: AccountUserId | null;\n    readonly embeddedPageDist?: string;\n    readonly requestHeaders?: Readonly<Record<string, string>>;\n}',
   },
   {
+    name: 'PlayerPersona',
+    declaration: 'export interface PlayerPersona {\n    name: string;\n    appearance: string;\n    background: string;\n}',
+  },
+  {
     name: 'PluginChange',
     declaration: 'export interface PluginChange {\n    readonly reason: \'plugin\' | \'bundle\' | \'install\' | \'remove\';\n}',
   },
@@ -6309,6 +6420,10 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export type Registry = string | null;',
   },
   {
+    name: 'RelationshipMetric',
+    declaration: 'export interface RelationshipMetric {\n    min: number;\n    max: number;\n    initial: number;\n}',
+  },
+  {
     name: 'Reload',
     declaration: 'export interface Reload {\n    filename: string;\n    modules: ReloadModules;\n    runtime?: Plugin.Runtime | undefined;\n}',
   },
@@ -6395,6 +6510,50 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   {
     name: 'ResumeAgentOptions',
     declaration: 'export interface ResumeAgentOptions {\n    readonly resumeSessionId: SessionId;\n    readonly parentAgent?: Agent;\n    readonly agentOptions?: AgentOptions;\n    readonly signal?: AbortSignal;\n    readonly setup?: AgentSetup;\n}',
+  },
+  {
+    name: 'RoleplayCards',
+    declaration: 'export class RoleplayCards {\n    constructor(ctx: Context, roots: string[]);\n    async list(): Promise<CharacterCard[]>;\n    async load(name: string): Promise<CharacterCard>;\n    async dispose(): Promise<void>;\n}',
+  },
+  {
+    name: 'RoleplayConflict',
+    declaration: 'export interface RoleplayConflict {\n    id: RoleplayOperationId;\n    source: RoleplaySource;\n    reason: string;\n    proposed: string;\n    resolved: boolean;\n}',
+  },
+  {
+    name: 'RoleplayHistoryPoint',
+    declaration: 'export interface RoleplayHistoryPoint {\n    seq: number;\n    kind: \'userMessage\' | \'assistantReply\';\n    text: string;\n}',
+  },
+  {
+    name: 'RoleplayMemory',
+    declaration: 'export interface RoleplayMemory {\n    id: RoleplayMemoryId;\n    key: string;\n    text: string;\n    applicable: string;\n    evidenceId: MessageId;\n    source: RoleplaySource;\n    status: \'active\' | \'invalid\' | \'review\';\n}',
+  },
+  {
+    name: 'RoleplayMemoryId',
+    declaration: 'export type RoleplayMemoryId = Branded<\'RoleplayMemoryId\'>;',
+  },
+  {
+    name: 'RoleplayOperationId',
+    declaration: 'export type RoleplayOperationId = Branded<\'RoleplayOperationId\'>;',
+  },
+  {
+    name: 'RoleplayRevision',
+    declaration: 'export interface RoleplayRevision {\n    revision: number;\n    source: RoleplaySource;\n    state: RoleplayState;\n    conflicts: RoleplayConflict[];\n    touched: string[];\n    deltas: Record<string, number>;\n    undone: boolean;\n}',
+  },
+  {
+    name: 'RoleplayScene',
+    declaration: 'export interface RoleplayScene {\n    fields: Record<string, string>;\n    archived: boolean;\n}',
+  },
+  {
+    name: 'RoleplaySource',
+    declaration: 'export interface RoleplaySource {\n    sessionId: SessionId;\n    reply: number;\n    operation: RoleplayOperationId;\n    actor: \'model\' | \'user\';\n}',
+  },
+  {
+    name: 'RoleplayState',
+    declaration: 'export interface RoleplayState {\n    card: CharacterCard;\n    player: PlayerPersona;\n    metrics: Record<string, number>;\n    memories: Record<string, RoleplayMemory>;\n    scenes: Record<string, RoleplayScene>;\n    blockedSources: string[];\n}',
+  },
+  {
+    name: 'RoleplayUserChange',
+    declaration: 'export interface RoleplayUserChange {\n    scene?: Record<string, string>;\n    metrics?: Record<string, number>;\n    player?: PlayerPersona;\n    memory?: {\n        id: RoleplayMemoryId;\n        text?: string;\n        status?: \'active\' | \'invalid\';\n    };\n    resolveConflict?: RoleplayOperationId;\n}',
   },
   {
     name: 'RpcId',
@@ -7030,7 +7189,7 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   },
   {
     name: 'SessionSummary',
-    declaration: 'export interface SessionSummary {\n    readonly agentAvailable: boolean;\n    readonly sessionId: SessionId;\n    readonly updatedAt: number;\n    readonly running: boolean;\n    readonly blank: boolean;\n    readonly parentSessionId?: SessionId;\n    readonly origin?: \'subagent\';\n    readonly cwd?: string;\n    readonly projections?: SessionProjectionHints;\n}',
+    declaration: 'export interface SessionSummary {\n    readonly agentAvailable: boolean;\n    readonly sessionId: SessionId;\n    readonly updatedAt: number;\n    readonly running: boolean;\n    readonly blank: boolean;\n    readonly parentSessionId?: SessionId;\n    readonly origin?: \'subagent\';\n    readonly cwd?: string;\n    readonly agentPreset?: string;\n    readonly projections?: SessionProjectionHints;\n}',
   },
   {
     name: 'SessionSurface',

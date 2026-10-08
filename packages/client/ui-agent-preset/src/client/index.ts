@@ -52,6 +52,13 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
   }
 }
 
+declare module '@deepseek-ai/cordis' {
+  interface Events {
+    /** Open character selection without creating a work session. @mode emit */
+    'roleplay/open'(): void
+  }
+}
+
 export type { AgentPresetLabelInjected, AgentPresetLabelProps } from './AgentPresetLabel.tsx'
 export type { AgentPresetSeatInjected, AgentPresetSeatProps } from './AgentPresetSeat.tsx'
 export type { AgentPresetSectionInjected, AgentPresetSectionProps } from './AgentPresetSection.tsx'
@@ -187,7 +194,10 @@ export function apply(ctx: ClientContext): void {
       return {
         hooks: { agentPresetSeat: seat.store, developerTools: ctx.configForms.developerTools.enabled },
         load: () => seat.load(),
-        select: (id: string) => seat.select(id),
+        select: async (id: string) => {
+          if (id === 'roleplay') { ctx.emit('roleplay/open'); return undefined }
+          return seat.select(id)
+        },
         dismissRefusal: (error) => { seat.dismissRefusal(error) },
         introduced: () => { seat.introduced() },
       }
@@ -259,7 +269,10 @@ export function apply(ctx: ClientContext): void {
     view: (id: string) => section.view(id),
     closeView: () => { section.closeView() },
     ...creatorDraft === undefined ? {} : { startCreatorDraft: creatorDraft },
-    makeDefault: (id: string) => section.makeDefault(id, captureBlankSessionSync()),
+    makeDefault: async (id: string) => {
+      if (id === 'roleplay') { ctx.emit('roleplay/open'); return }
+      await section.makeDefault(id, captureBlankSessionSync())
+    },
   })
 
   // Ordered after Models: choosing a model is routine, and composing an

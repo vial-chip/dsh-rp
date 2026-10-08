@@ -99,6 +99,8 @@ export const SERVICE_PAGE: Record<string, string> = {
   sessionFeedback: 'feedback.md',
   permissionPresets: 'permission-presets.md',
   planMode: 'plan.md',
+  roleplay: 'roleplay.md',
+  roleplayController: 'roleplay.md',
   terminals: 'terminal.md',
   sandbox: 'sandbox.md',
   sandboxPolicy: 'sandbox.md',
@@ -258,6 +260,7 @@ export const EVENT_SCOPE_PAGE: Record<string, string> = {
  * exemption cannot mask another declaration in that scope.
  */
 export const EVENT_WALK_EXEMPTIONS: Record<string, string> = {
+  'roleplay/open': 'client-face character hub navigation — packages/client/ui-roleplay/README.md owns the API',
   'command/executed': 'client-face local command acknowledgment — packages/client/ui-commands/README.md owns the API',
   'connection/reset': 'client-face transport signal — packages/api/session-controller/README.md owns the API',
   'locale/change': 'client-face locale switch signal — packages/client/locale/README.md owns the API',
@@ -276,6 +279,12 @@ export const EVENT_WALK_EXEMPTIONS: Record<string, string> = {
  * appear on more than one page.
  */
 export const LINK_MAP: Readonly<Record<string, string>> = {
+  CharacterCard: 'roleplay.md',
+  CharacterProfile: 'roleplay.md',
+  CharacterProfileId: 'roleplay.md',
+  PlayerPersona: 'roleplay.md',
+  RoleplayHistoryPoint: 'roleplay.md',
+  RoleplayUserChange: 'roleplay.md',
   EventLogOptions: 'otel.md',
   EventLogReporter: 'otel.md',
   SessionLogOptions: 'otel.md',

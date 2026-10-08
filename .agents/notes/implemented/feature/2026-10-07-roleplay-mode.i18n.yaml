@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for 2026-10-07-roleplay-mode.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-10-07-roleplay-mode.md
+/agent-note-roleplay-mode-with-shared-character-memory:
+  en: 77d6208a1952453a
+  zh: a927d22f8edf9374
+/agent-note-roleplay-mode-with-shared-character-memory/problem:
+  en: ee0dce69d31aba61
+  zh: d6561353613de72d
+/agent-note-roleplay-mode-with-shared-character-memory/decision:
+  en: a65520aac3d4c762
+  zh: 1e379ca6799035de
+/agent-note-roleplay-mode-with-shared-character-memory/decision/ownership-and-durable-writes:
+  en: 19fab811cb8a20c1
+  zh: 3174b0f4ee4623c1
+/agent-note-roleplay-mode-with-shared-character-memory/decision/logged-context-and-corrections:
+  en: 8c2975b6fb62d4ba
+  zh: bf36542d0cedfd32
+/agent-note-roleplay-mode-with-shared-character-memory/decision/cards-and-historical-operations:
+  en: 6b553583167f9397
+  zh: 8c29bc4095964ee5
+/agent-note-roleplay-mode-with-shared-character-memory/alternatives-considered:
+  en: 9d7c7d3395d9d983
+  zh: d7ec244b94d09744
+/agent-note-roleplay-mode-with-shared-character-memory/consequences:
+  en: d3fb0927feafe443
+  zh: 87cb07761242f464
+/agent-note-roleplay-mode-with-shared-character-memory/verification:
+  en: d9324f2d87795c04
+  zh: 5df31d3641f90ce1

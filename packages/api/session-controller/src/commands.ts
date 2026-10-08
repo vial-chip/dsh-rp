@@ -103,6 +103,9 @@ export class SessionCommandController {
    * @returns the Session identity and resolved preset when configured.
    */
   async create(request: SessionCreateRequest): Promise<SessionCreateValue> {
+    if ((request.agentPreset ?? this.ctx.get('agentPresets')?.defaultId) === 'roleplay') {
+      throw new RemoteError('gateway/bad-request', 'Create roleplay conversations from a character profile', {})
+    }
     if (request.workspaceId !== undefined && request.cwd !== undefined) {
       throw new RemoteError('gateway/bad-request', 'session.create accepts workspaceId or cwd, not both', {})
     }
@@ -242,6 +245,9 @@ export class SessionCommandController {
       )
     }
     using source = observed
+    if (source.header.agentPreset === 'roleplay') {
+      throw new RemoteError('gateway/bad-request', 'Branch roleplay conversations through their character profile', {})
+    }
     const boundary = atSeq ?? latestCompletedPrefixBoundary(source.events)
     if (boundary === undefined || source.events[boundary]?.seq !== boundary) {
       throw new RemoteError(

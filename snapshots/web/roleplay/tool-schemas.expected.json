@@ -1,0 +1,208 @@
+{
+  "initial": [
+    {
+      "name": "roleplay_read",
+      "description": "Read the current scene, relationship and selected memories. Supply query to search all active memories in this character profile.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "roleplay_update",
+      "description": "Save AI scene fields, relationship deltas or a stable memory. Use the observed expectedRevision. Conflicts retain the current information. User corrections take precedence.",
+      "parameters": {
+        "type": "object",
+        "required": [
+          "expectedRevision"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scene": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "deltas": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "memory": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "text",
+              "applicable",
+              "evidenceId"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "applicable": {
+                "type": "string"
+              },
+              "evidenceId": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "changes": [
+    [
+      {
+        "name": "roleplay_read",
+        "description": "Read the current scene, relationship and selected memories. Supply query to search all active memories in this character profile.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "roleplay_update",
+        "description": "Save AI scene fields, relationship deltas or a stable memory. Use the observed expectedRevision. Conflicts retain the current information. User corrections take precedence.",
+        "parameters": {
+          "type": "object",
+          "required": [
+            "expectedRevision"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "expectedRevision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "scene": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "deltas": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              }
+            },
+            "memory": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "key",
+                "text",
+                "applicable",
+                "evidenceId"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "applicable": {
+                  "type": "string"
+                },
+                "evidenceId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    [
+      {
+        "name": "roleplay_read",
+        "description": "Read the current scene, relationship and selected memories. Supply query to search all active memories in this character profile.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "roleplay_update",
+        "description": "Save AI scene fields, relationship deltas or a stable memory. Use the observed expectedRevision. Conflicts retain the current information. User corrections take precedence.",
+        "parameters": {
+          "type": "object",
+          "required": [
+            "expectedRevision"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "expectedRevision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "scene": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "deltas": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              }
+            },
+            "memory": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "key",
+                "text",
+                "applicable",
+                "evidenceId"
+              ],
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "applicable": {
+                  "type": "string"
+                },
+                "evidenceId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  ]
+}

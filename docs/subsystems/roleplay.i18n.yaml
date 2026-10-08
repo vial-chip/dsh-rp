@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for roleplay.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/subsystems/roleplay.md
+/roleplay-profiles-and-conversations:
+  en: ae78c57c2f01895f
+  zh: 68350e25298c4462
+/roleplay-profiles-and-conversations/ownership-and-state:
+  en: 0d77a4b4b42595a0
+  zh: df0068bc87d6e912
+/roleplay-profiles-and-conversations/model-requests-and-corrections:
+  en: a6eaac78046ad0d7
+  zh: e0b6bf6637378b3d
+/roleplay-profiles-and-conversations/session-history-and-durable-recovery:
+  en: b61a5ca013b49d53
+  zh: 77b9f48483b9324a
+/roleplay-profiles-and-conversations/composition-and-isolation:
+  en: 14266759ab6d52d8
+  zh: 9e74f0577e0888d0
+/roleplay-profiles-and-conversations/cordis-api/ctx-roleplaycontroller-roleplaycontroller:
+  en: ae98a050c5d84639
+  zh: 8c2ee64deb709019

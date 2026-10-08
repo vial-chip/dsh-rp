@@ -1,0 +1,11 @@
+version: 1
+scenario: roleplay
+profile: web
+composition: web-roleplay
+recording: authored
+replay:
+  override: true
+header:
+  class: web-roleplay
+  pin: true
+  promptChanges: 2

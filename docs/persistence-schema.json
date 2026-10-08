@@ -11152,6 +11152,86 @@
       }
     },
     {
+      "key": "event:roleplay/checkpoint",
+      "kind": "event",
+      "event": "roleplay/checkpoint",
+      "surface": false,
+      "digest": "026d7018d6f929ad8d650c80ed10c755f938abdd0ca6fa94502cb902aa15e575",
+      "schema": {
+        "root": 0,
+        "nodes": [
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "data",
+                "type": 1,
+                "optional": false
+              },
+              {
+                "name": "ignorable",
+                "type": 4,
+                "optional": true
+              },
+              {
+                "name": "seq",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "time",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "type",
+                "type": 5,
+                "optional": false
+              }
+            ],
+            "indices": []
+          },
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "profileId",
+                "type": 2,
+                "optional": false
+              },
+              {
+                "name": "revision",
+                "type": 3,
+                "optional": false
+              },
+              {
+                "name": "sessionId",
+                "type": 2,
+                "optional": false
+              }
+            ],
+            "indices": []
+          },
+          {
+            "kind": "primitive",
+            "type": "string"
+          },
+          {
+            "kind": "primitive",
+            "type": "number"
+          },
+          {
+            "kind": "literal",
+            "value": true
+          },
+          {
+            "kind": "literal",
+            "value": "roleplay/checkpoint"
+          }
+        ]
+      }
+    },
+    {
       "key": "event:sandbox/mode",
       "kind": "event",
       "event": "sandbox/mode",
@@ -21805,6 +21885,13 @@
       "sources": []
     },
     {
+      "digest": "02213307d964c736e4f195602fdbcf643224899dd9ad16aac600d8673707bcd7",
+      "names": [],
+      "sources": [
+        "packages/roleplay/roleplay/src/types.ts:49"
+      ]
+    },
+    {
       "digest": "022623b9ef98ec47ec3c3bae0c51027c70d2601141c5e92e26a0d83d1b4cef06",
       "names": [],
       "sources": []
@@ -21815,6 +21902,11 @@
       "sources": [
         "packages/core/session/src/types.ts:206"
       ]
+    },
+    {
+      "digest": "026d7018d6f929ad8d650c80ed10c755f938abdd0ca6fa94502cb902aa15e575",
+      "names": [],
+      "sources": []
     },
     {
       "digest": "02b2c23f2d94b028c9588a8faace3fce1217405db346da3389368b495457bf79",
@@ -22928,6 +23020,7 @@
         "packages/llm/llm/src/brand.ts#ProviderRequestId",
         "packages/llm/llm/src/brand.ts#ReasoningEffortId",
         "packages/llm/llm/src/brand.ts#ToolCallId",
+        "packages/roleplay/roleplay/src/types.ts#CharacterProfileId",
         "packages/schedule/schedule/src/types.ts#ScheduleId",
         "packages/session/session-title/src/index.ts#SessionTitleProviderId",
         "packages/session/session-title/src/types.ts#SessionTitleProviderId",
@@ -22937,7 +23030,7 @@
         "packages/workflow/workflow/src/types.ts#WorkflowRunId"
       ],
       "sources": [
-        "packages/api/session-controller/src/types.ts:398",
+        "packages/api/session-controller/src/types.ts:400",
         "packages/attachment/attachment/src/brand.ts:6",
         "packages/compaction/compaction/src/brand.ts:4",
         "packages/core/session/src/types.ts:20",
@@ -22953,6 +23046,7 @@
         "packages/llm/llm/src/brand.ts:31",
         "packages/llm/llm/src/brand.ts:43",
         "packages/llm/llm/src/brand.ts:67",
+        "packages/roleplay/roleplay/src/types.ts:7",
         "packages/schedule/schedule/src/types.ts:14",
         "packages/session/session-title/src/index.ts:42",
         "packages/session/session-title/src/types.ts:17",
@@ -23380,7 +23474,7 @@
       "digest": "6a4f72e2e179e17b922f2a9392c0e1c8f8c707f32494372454850a3eb184a6e7",
       "names": [],
       "sources": [
-        "packages/api/session-controller/src/types.ts:403"
+        "packages/api/session-controller/src/types.ts:405"
       ]
     },
     {
@@ -24708,6 +24802,11 @@
       "sources": [
         "packages/workflow/workflow/src/types.ts:110"
       ]
+    },
+    {
+      "digest": "c39990dff5d4d544a23d617d722c4b71ece9efb0f6678ecb7ec63c9b336b2a2c",
+      "names": [],
+      "sources": []
     },
     {
       "digest": "c43b119ce579b3e9983a0d3adc4ba402ebb9ba773d89738a2dab01ecf5813943",

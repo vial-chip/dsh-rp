@@ -30,6 +30,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "zod": "^4.4.3",
     "@deepseek-ai/cordis-plugin-group": "workspace:~",
     "@deepseek-ai/dsh-client-modules": "workspace:*",
     "@deepseek-ai/dsh-client-store": "workspace:*",

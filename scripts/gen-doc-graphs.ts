@@ -108,6 +108,22 @@ const GROUP_ORDER = [
 
 const SERVICE_ROLES: ServiceRole[] = [
   {
+    key: 'roleplay',
+    pkg: 'roleplay',
+    title: 'Independent character profiles and shared memories',
+    mode: 'core',
+    consumers: ['roleplay'],
+    note: 'Owns immutable card bindings, revisioned profile state, scene ownership and durable lifecycle intents; scoped model tools and the Host controller consume this authority.',
+  },
+  {
+    key: 'roleplayController',
+    pkg: 'roleplay',
+    title: 'Roleplay profile and history Remote controller',
+    mode: 'core',
+    consumers: ['client-ui-roleplay'],
+    note: 'Publishes profile edits and explicit conversation continuation, archival, historical branching and selective reply compensation through the typed Remote namespace.',
+  },
+  {
     key: 'hmr',
     pkg: 'hmr',
     title: 'Serialized module and configuration reloads',

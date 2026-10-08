@@ -9,6 +9,10 @@
 
 ```mermaid
 flowchart LR
+  pkg_roleplay["roleplay"]
+  svc_roleplay["ctx.roleplay<br/>Independent character profiles and shared memories"]
+  svc_roleplayController["ctx.roleplayController<br/>Roleplay profile and history Remote controller"]
+  pkg_client_ui_roleplay["client-ui-roleplay"]
   pkg_hmr["hmr"]
   svc_hmr["ctx.hmr<br/>Serialized module and configuration reloads"]
   pkg_app_boot["app-boot"]
@@ -363,6 +367,8 @@ flowchart LR
   pkg_ptc_runtime --> svc_ptcRuntime
   pkg_ptc_runtime_node --> svc_ptcRuntime
   pkg_pwsh_local --> svc_shell
+  pkg_roleplay --> svc_roleplay
+  pkg_roleplay --> svc_roleplayController
   pkg_sandbox --> svc_sandbox
   pkg_sandbox_local --> svc_sandbox
   pkg_sandbox_policy --> svc_sandboxPolicy
@@ -485,6 +491,8 @@ flowchart LR
   svc_profileContext --> pkg_plugin_manager
   svc_ptcRuntime --> pkg_tools
   svc_ptcRuntime --> pkg_workflow_ptc
+  svc_roleplay --> pkg_roleplay
+  svc_roleplayController --> pkg_client_ui_roleplay
   svc_sandbox --> pkg_bash_sandbox
   svc_sandbox --> pkg_terminal_bash
   svc_sandboxPolicy --> pkg_bash_sandbox
@@ -573,6 +581,8 @@ flowchart LR
 
 | ctx 键 | 角色 | 所属包 | 实现 | 直接消费方 | 配套插件 | 说明 |
 | --- | --- | --- | --- | --- | --- | --- |
+| `ctx.roleplay` | `core` | [`roleplay`](../packages/roleplay/roleplay) | - | [`roleplay`](../packages/roleplay/roleplay) | - | 负责不可变角色卡绑定、带修订的档案状态、场景所有权与持久化生命周期意图；带作用域的模型工具和 Host 控制器消费此权威服务。 |
+| `ctx.roleplayController` | `core` | [`roleplay`](../packages/roleplay/roleplay) | - | [`client-ui-roleplay`](../packages/client/ui-roleplay) | - | 通过带类型的 Remote 命名空间提供档案编辑，以及明确的会话继续、归档、历史分支和选择性回复补偿。 |
 | `ctx.hmr` | `core` | [`hmr`](../packages/boot/hmr) | - | [`app-boot`](../packages/boot/app-boot) | - | 负责模块和精确配置监听；应用修改共用其队列，自动重载等待应用文件锁。 |
 | `ctx.pluginRegistryProbe` | `core` | [`client-ui-plugin-manager`](../packages/client/ui-plugin-manager) | - | [`client-ui-plugin-manager`](../packages/client/ui-plugin-manager) | - | 在 Host 上并发比较公共安装源响应；初始安装源推荐由 Client 负责。 |
 | `ctx.pluginManager` | `core` | [`plugin-manager`](../packages/boot/plugin-manager) | - | [`plugin-manager`](../packages/boot/plugin-manager), `ui-settings-plugin-inventory` | - | 与 CLI 共享 profile 包操作，并向 Web 和 Agent 调用方分别报告持久状态与运行状态。 |

@@ -345,6 +345,9 @@ export class AgentPresetRegistry extends TypertRemoteService {
    */
   @Remote('select')
   async select(agent: Agent, agentPreset: string): Promise<string> {
+    if (agentPreset === 'roleplay' || agent.session.header.agentPreset === 'roleplay') {
+      throw new RemoteError('agent-preset/locked', 'Roleplay selection requires a character profile', { sessionId: agent.id, agentPreset })
+    }
     const turn = (this.switches.get(agent.id) ?? Promise.resolve()).then(async () => {
       const boundary = this.owner.sessionProjections.stateOf(agent.session, 'turnBoundary')
       if (boundary !== undefined && (boundary.openTurnStartSeq !== null || boundary.lastTurn > 0)) {

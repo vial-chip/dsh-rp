@@ -19,6 +19,7 @@
 
 | 工具包 | 模型可见名称 | 依赖 | 写入／影响 | 随产品发布的别名 | 部署说明 |
 | --- | --- | --- | --- | --- | --- |
+| `@deepseek-ai/dsh-roleplay` | `roleplay_read`, `roleplay_update` | `ctx.roleplay`, `ctx.sessionQuery`, `ctx.sessionProjections`, `所属角色 Agent` | `tool/call`, `tool/result`, `roleplay/checkpoint`, `角色档案修订` | - | 这些工具仅可用于档案拥有的角色会话。记忆写入引用会话用户消息证据；指标写入接受增减量，管理编辑设置绝对值。 |
 | `@deepseek-ai/dsh-plugin-manager` | `plugin_manager` | `ctx.tools`, `ctx.pluginManager`, `ctx.sandboxPolicy` | `tool/call`, `tool/result`, `user/message` | - | - |
 | `@deepseek-ai/dsh-mcp-resources` | `list_mcp_resource_templates`, `list_mcp_resources`, `read_mcp_resource` | `ctx.tools`, `ctx.mcpResources` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-experimental-browser-use-stagehand-native` | `stagehand_act`、`stagehand_extract`、`stagehand_navigate`、`stagehand_observe`、`stagehand_screenshot`、`stagehand_tabs` | `ctx.browserUse`、`ctx.agents`、`ctx.tools`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | - |
@@ -49,6 +50,88 @@
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`、`ctx.workflowEngine`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents the script children)` | `tool/call`、`tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-workspace-dependencies` | `load_workspace_dependencies` | `ctx.tools` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`、`web_search` | `ctx.tools`、`ctx.web`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。 |
+
+<a id="deepseek-aidsh-roleplay"></a>
+
+## `@deepseek-ai/dsh-roleplay`
+
+### `roleplay_read`
+
+读取当前场景、关系与精选记忆。提供 query 可搜索此角色档案的全部活跃记忆。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+来源： [`packages/roleplay/roleplay/src/runtime.ts`](../packages/roleplay/roleplay/src/runtime.ts)
+
+### `roleplay_update`
+
+保存 AI 场景字段、关系增减量或稳定记忆。使用已观察的 expectedRevision。出现冲突时保留当前信息。用户纠正优先。
+
+```json
+{
+  "type": "object",
+  "required": [
+    "expectedRevision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "expectedRevision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "deltas": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "text",
+        "applicable",
+        "evidenceId"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "applicable": {
+          "type": "string"
+        },
+        "evidenceId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+```
+
+来源： [`packages/roleplay/roleplay/src/runtime.ts`](../packages/roleplay/roleplay/src/runtime.ts)
+
+这些工具仅可用于档案拥有的角色会话。记忆写入引用会话用户消息证据；指标写入接受增减量，管理编辑设置绝对值。
 
 <a id="deepseek-aidsh-plugin-manager"></a>
 

@@ -17,6 +17,7 @@ interface Row {
   id: string
   phase: Phase
   cwd?: false
+  agentPreset?: string
 }
 
 const contexts = new Set<Context>()
@@ -74,7 +75,8 @@ async function harness(rows: readonly Row[], summaryMs = 8, workSliceMs = 8) {
   }
   const records: SessionRecord[] = rows.map((row) => {
     const session = ctx.sessions.prepare(SessionId(row.id), {
-      meta: { createdAt: 100, ...(row.cwd === false ? {} : { cwd: resolve('list-scheduling-fixture') }) },
+      meta: { createdAt: 100, ...(row.agentPreset === undefined ? {} : { agentPreset: row.agentPreset }),
+        ...(row.cwd === false ? {} : { cwd: resolve('list-scheduling-fixture') }) },
     })
     prepared.set(row.id, session)
     if (row.phase === 'live') attach(row.id)
@@ -100,6 +102,14 @@ async function harness(rows: readonly Row[], summaryMs = 8, workSliceMs = 8) {
 }
 
 describe('Session-list work slices', () => {
+  it.each<Phase>(['live', 'cold'])('keeps %s roleplay identities navigable without a working directory or preset cache', async (phase) => {
+    const h = await harness([{ id: 'character', phase, cwd: false, agentPreset: 'roleplay' },
+      { id: 'unbound-work', phase, cwd: false }], 0)
+    const result = await h.list.list()
+    expect(result.find(item => item.sessionId === 'character')).toMatchObject({ agentPreset: 'roleplay' })
+    expect(result.find(item => item.sessionId === 'character')?.cwd).toBeUndefined()
+    if (phase === 'cold') expect(result).toHaveLength(1)
+  })
   it.each<Phase>(['live', 'cold'])('keeps cheap %s summaries in one synchronous slice', async (phase) => {
     const h = await harness([{ id: 'first', phase }, { id: 'middle', phase }, { id: 'last', phase }], 2)
     const yieldWork = vi.spyOn(scheduler, 'yield')
