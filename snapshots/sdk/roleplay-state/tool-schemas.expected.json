@@ -1,0 +1,209 @@
+{
+  "initial": [
+    {
+      "name": "roleplay_body_read",
+      "description": "读取已记录的身体状态，包括身体状况、临时情绪。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "description": "要读取的字段名称；省略时读取本类全部字段。",
+            "items": {
+              "type": "string",
+              "description": "字段名称，可使用中文。"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "roleplay_body_update",
+      "description": "更新身体状态，包括身体状况、临时情绪。只修改指定字段，保留其他字段；只返回简短确认。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "changes": {
+            "type": "array",
+            "description": "本次要更新的字段，每个字段只出现一次。",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "字段名称，可使用中文。"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "该字段的新状态文本。"
+                }
+              },
+              "required": [
+                "field",
+                "value"
+              ]
+            }
+          }
+        },
+        "required": [
+          "changes"
+        ]
+      }
+    },
+    {
+      "name": "roleplay_clothing_read",
+      "description": "读取已记录的服饰状态，包括当前穿着。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "description": "要读取的字段名称；省略时读取本类全部字段。",
+            "items": {
+              "type": "string",
+              "description": "字段名称，可使用中文。"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "roleplay_clothing_update",
+      "description": "更新服饰状态，包括当前穿着。只修改指定字段，保留其他字段；只返回简短确认。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "changes": {
+            "type": "array",
+            "description": "本次要更新的字段，每个字段只出现一次。",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "字段名称，可使用中文。"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "该字段的新状态文本。"
+                }
+              },
+              "required": [
+                "field",
+                "value"
+              ]
+            }
+          }
+        },
+        "required": [
+          "changes"
+        ]
+      }
+    },
+    {
+      "name": "roleplay_relationship_read",
+      "description": "读取已记录的关系状态，包括好感、信任等数值指标。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "description": "要读取的字段名称；省略时读取本类全部字段。",
+            "items": {
+              "type": "string",
+              "description": "字段名称，可使用中文。"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "roleplay_relationship_update",
+      "description": "增减已记录的关系指标，包括好感、信任等数值。正数增加，负数减少；未记录的指标从零开始。只返回简短确认。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "changes": {
+            "type": "array",
+            "description": "本次要增减的关系指标，每个指标只出现一次。",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "关系指标名称，可使用中文。"
+                },
+                "delta": {
+                  "type": "number",
+                  "description": "增减量；正数增加，负数减少。"
+                }
+              },
+              "required": [
+                "field",
+                "delta"
+              ]
+            }
+          }
+        },
+        "required": [
+          "changes"
+        ]
+      }
+    },
+    {
+      "name": "roleplay_world_read",
+      "description": "读取已记录的世界状态，包括时间、地点、天气、事件。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "description": "要读取的字段名称；省略时读取本类全部字段。",
+            "items": {
+              "type": "string",
+              "description": "字段名称，可使用中文。"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "roleplay_world_update",
+      "description": "更新世界状态，包括时间、地点、天气、事件。只修改指定字段，保留其他字段；只返回简短确认。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "changes": {
+            "type": "array",
+            "description": "本次要更新的字段，每个字段只出现一次。",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "字段名称，可使用中文。"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "该字段的新状态文本。"
+                }
+              },
+              "required": [
+                "field",
+                "value"
+              ]
+            }
+          }
+        },
+        "required": [
+          "changes"
+        ]
+      }
+    }
+  ],
+  "changes": []
+}

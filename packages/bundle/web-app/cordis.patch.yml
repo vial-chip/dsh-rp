@@ -581,3 +581,23 @@
       name: '@deepseek-ai/dsh-agent-preset-registry'
       config:
         default: standard
+    - id: roleplay
+      name: '@deepseek-ai/dsh-roleplay'
+    - id: ui-roleplay
+      name: '@deepseek-ai/dsh-client-ui-roleplay'
+    - id: roleplay-world-read
+      name: '@deepseek-ai/dsh-tool-roleplay/world-read'
+    - id: roleplay-world-update
+      name: '@deepseek-ai/dsh-tool-roleplay/world-update'
+    - id: roleplay-body-read
+      name: '@deepseek-ai/dsh-tool-roleplay/body-read'
+    - id: roleplay-body-update
+      name: '@deepseek-ai/dsh-tool-roleplay/body-update'
+    - id: roleplay-clothing-read
+      name: '@deepseek-ai/dsh-tool-roleplay/clothing-read'
+    - id: roleplay-clothing-update
+      name: '@deepseek-ai/dsh-tool-roleplay/clothing-update'
+    - id: roleplay-relationship-read
+      name: '@deepseek-ai/dsh-tool-roleplay/relationship-read'
+    - id: roleplay-relationship-update
+      name: '@deepseek-ai/dsh-tool-roleplay/relationship-update'

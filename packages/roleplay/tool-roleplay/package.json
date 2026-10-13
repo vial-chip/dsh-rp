@@ -1,0 +1,103 @@
+{
+  "name": "@deepseek-ai/dsh-tool-roleplay",
+  "description": "八个独立的角色扮演状态读取与更新工具",
+  "version": "0.2.1-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "directory": "packages/roleplay/tool-roleplay"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./world-read": {
+      "types": "./lib/types/world-read.d.ts",
+      "default": "./lib/types/world-read.js"
+    },
+    "./world-read/locale/*.json": "./locale/world-read/*.json",
+    "./world-update": {
+      "types": "./lib/types/world-update.d.ts",
+      "default": "./lib/types/world-update.js"
+    },
+    "./world-update/locale/*.json": "./locale/world-update/*.json",
+    "./body-read": {
+      "types": "./lib/types/body-read.d.ts",
+      "default": "./lib/types/body-read.js"
+    },
+    "./body-read/locale/*.json": "./locale/body-read/*.json",
+    "./body-update": {
+      "types": "./lib/types/body-update.d.ts",
+      "default": "./lib/types/body-update.js"
+    },
+    "./body-update/locale/*.json": "./locale/body-update/*.json",
+    "./clothing-read": {
+      "types": "./lib/types/clothing-read.d.ts",
+      "default": "./lib/types/clothing-read.js"
+    },
+    "./clothing-read/locale/*.json": "./locale/clothing-read/*.json",
+    "./clothing-update": {
+      "types": "./lib/types/clothing-update.d.ts",
+      "default": "./lib/types/clothing-update.js"
+    },
+    "./clothing-update/locale/*.json": "./locale/clothing-update/*.json",
+    "./relationship-read": {
+      "types": "./lib/types/relationship-read.d.ts",
+      "default": "./lib/types/relationship-read.js"
+    },
+    "./relationship-read/locale/*.json": "./locale/relationship-read/*.json",
+    "./relationship-update": {
+      "types": "./lib/types/relationship-update.d.ts",
+      "default": "./lib/types/relationship-update.js"
+    },
+    "./relationship-update/locale/*.json": "./locale/relationship-update/*.json",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "locale/body-read/*.json",
+    "locale/body-update/*.json",
+    "locale/clothing-read/*.json",
+    "locale/clothing-update/*.json",
+    "locale/relationship-read/*.json",
+    "locale/relationship-update/*.json",
+    "locale/world-read/*.json",
+    "locale/world-update/*.json",
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/dsh-agent-preset-registry": "workspace:*",
+    "@deepseek-ai/cordis": "workspace:~",
+    "@deepseek-ai/dsh-agent": "workspace:*",
+    "@deepseek-ai/dsh-tools": "workspace:*",
+    "@deepseek-ai/dsh-llm": "workspace:*",
+    "@deepseek-ai/dsh-roleplay": "workspace:*"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-agent-preset-registry": "workspace:*",
+    "@deepseek-ai/dsh-scope": "workspace:*",
+    "@deepseek-ai/dsh-llm": "workspace:*",
+    "@deepseek-ai/dsh-session": "workspace:*",
+    "@deepseek-ai/dsh-agent": "workspace:*",
+    "@deepseek-ai/cordis-plugin-include": "workspace:~",
+    "@deepseek-ai/cordis": "workspace:~",
+    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:*",
+    "@deepseek-ai/dsh-roleplay": "workspace:*",
+    "@deepseek-ai/cordis-plugin-loader": "workspace:~",
+    "@deepseek-ai/dsh-tools": "workspace:*",
+    "@deepseek-ai/dsh-session-projection": "workspace:*",
+    "@deepseek-ai/dsh-system-prompt": "workspace:*",
+    "@deepseek-ai/dsh-skill": "workspace:*",
+    "@deepseek-ai/dsh-session-query": "workspace:*"
+  }
+}

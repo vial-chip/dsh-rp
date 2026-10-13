@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-10-10-session-roleplay.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-10-10-session-roleplay.md
+/agent-note-single-session-roleplay:
+  en: 49f5f6d4a2ba94e8
+  zh: 974ef1f03cf85f23
+/agent-note-single-session-roleplay/problem:
+  en: 0cb8cde2db98671e
+  zh: d0cfc110a2069162
+/agent-note-single-session-roleplay/decision:
+  en: a1758a4e3db63fea
+  zh: 38383645a370440d
+/agent-note-single-session-roleplay/alternatives-considered:
+  en: 6c68a87a5d968f3b
+  zh: 5de6941320136e46
+/agent-note-single-session-roleplay/consequences:
+  en: aae3497b262674f6
+  zh: 9cf78f80aa7117a3

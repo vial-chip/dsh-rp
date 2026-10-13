@@ -1,5 +1,26 @@
 /** Curated help for shipped presets, kept separate from their short picker copy. */
+const roleplayGuide = {
+  guideRoleplayIntro: '新建会话时选择「角色扮演」，在输入框旁选择角色卡，然后发送第一条消息。',
+  guideRoleplayExplanation: [
+    '### 日常互动',
+    '角色根据所选设定回应你的台词和行动。你决定自己的行为和内心体验；发送消息或明确继续时才推进互动。',
+    '### 查看和编辑状态',
+    '右侧栏的角色卡、世界、身体、服饰、关系书签展示已保存的信息。人工编辑只更新面板；角色自主读取对应状态时才会获知修改。',
+    '### 撤销和重新生成',
+    '会话空闲时可撤销最近一轮，将文字放回输入框，或用原始输入重新生成。操作会恢复本轮工具修改的状态，并保留之后的人工编辑。',
+  ].join('\n\n'),
+  guideRoleplayUsage: [
+    '### 开始共同生活',
+    '> 我回到家，把买好的菜放在厨房。今晚一起做饭吧。',
+    '角色会以所选同伴的身份回应。无需查询或修改状态的普通对话可以不调用工具。',
+    '### 调整已记录的状态',
+    '打开世界书签，编辑地点或天气并保存。面板立即显示修改；角色是否读取由当前互动决定。',
+  ].join('\n\n'),
+}
+
+/** English application help, with Chinese roleplay content. */
 export const guideEn = {
+  ...roleplayGuide,
   modeExplanation: 'Mode details',
   howToUse: 'How to use',
   guideSections: 'Guide sections',
@@ -78,6 +99,7 @@ export type PresetGuideKey = keyof typeof guideEn
 
 /** Simplified Chinese help. Examples describe suggested tasks, not recorded runs. */
 export const guideZh: Record<PresetGuideKey, string> = {
+  ...roleplayGuide,
   modeExplanation: '模式说明',
   howToUse: '如何使用',
   guideSections: '帮助内容',

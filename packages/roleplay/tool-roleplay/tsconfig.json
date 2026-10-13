@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "outDir": "lib/types",
+    "rootDir": "src"
+  },
+  "extends": "../../../tsconfig.base.json",
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../preset/agent-preset-registry"
+    },
+    {
+      "path": "../../../vendor/cosmokit"
+    },
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../core/tools"
+    },
+    {
+      "path": "../../core/agent"
+    },
+    {
+      "path": "../../llm/llm"
+    },
+    {
+      "path": "../roleplay"
+    }
+  ]
+}

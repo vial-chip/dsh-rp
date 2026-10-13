@@ -62,6 +62,7 @@ import {
   type SdkPromptContentBlock,
 } from '@deepseek-ai/dsh-sdk-client'
 import { SESSION_FORMAT_VERSION } from '@deepseek-ai/dsh-session'
+import { initProfile, PROFILE_TEMPLATES, readProfileManifest, writeProfileManifest } from '@deepseek-ai/dsh-app-boot'
 
 const corpusRoot = fileURLToPath(new URL('../', import.meta.url))
 
@@ -79,6 +80,8 @@ const mode = process.env.DSH_SNAPSHOT ?? 'replay'
 const recording = mode === 'record'
 const refreshing = mode === 'refresh'
 const sessionWriteMode = recording ? 'record' : refreshing ? 'refresh' : 'replay'
+// Real profile startup and later RPCs share the 120-second snapshot lane's request budget.
+const SDK_SNAPSHOT_RPC_TIMEOUT_MS = 110_000
 const RUNTIME_WORKSPACE_ENTRIES = [
   '.agents',
   '.child-dsh',
@@ -125,6 +128,16 @@ interface SdkAssertions {
 }
 
 const SDK_ASSERTIONS: Readonly<Record<string, SdkAssertions>> = {
+  'roleplay-state': {
+    expectedFinalResponse: '我系着蓝色围裙，准备好一起做饭了。',
+    expectedTools: {
+      roleplay_world_read: [], roleplay_world_update: ['changes'],
+      roleplay_body_read: [], roleplay_body_update: ['changes'],
+      roleplay_clothing_read: [], roleplay_clothing_update: ['changes'],
+      roleplay_relationship_read: [], roleplay_relationship_update: ['changes'],
+    },
+    runtimeContext: false,
+  },
   'dynamic-tool-updates': {
     expectedFinalResponse: 'DONE',
   },
@@ -352,7 +365,7 @@ async function hydrateReplayFixtures(scenario: CorpusScenario, cwd: string): Pro
   await mkdir(root, { recursive: true })
   return Promise.all((await fixtureFiles(scenario)).map(async (source) => {
     const destination = join(root, basename(source))
-    await writeFile(destination, (await readFile(source, 'utf8')).replaceAll('{{cwd}}', cwd))
+    await writeFile(destination, (await readFile(source, 'utf8')).replaceAll('{{cwd}}', JSON.stringify(cwd).slice(1, -1)))
     return destination
   }))
 }
@@ -558,6 +571,14 @@ async function runScenario(scenario: CorpusScenario): Promise<{
   const route = modelFromSession(primaryFixture)
   const patchRoot = join(cwd, '.snapshot-patches')
   await mkdir(patchRoot, { recursive: true })
+  if (scenario.name === 'roleplay-state') {
+    const profileDir = join(dshHome, 'profiles', 'sdk')
+    initProfile(profileDir, PROFILE_TEMPLATES.sdk!.bundles)
+    const manifest = readProfileManifest('dsh', profileDir)
+    writeProfileManifest(profileDir, { ...manifest, dependencies: {
+      ...manifest.dependencies, '@deepseek-ai/dsh-llm-replay': '*',
+    } })
+  }
   const assertions = SDK_ASSERTIONS[scenario.name] ?? {}
   const patches = [...authoredPatches(scenario, !recording), ...assertions.patches ?? []]
     .map((patch, index) => materializeProfilePatch(patch, cwd, 'sdk', patchRoot, index))
@@ -609,7 +630,8 @@ async function runScenario(scenario: CorpusScenario): Promise<{
     dshHome,
     processCwd: cwd,
     env,
-    requestTimeoutMs: 110_000,
+    initializeTimeoutMs: SDK_SNAPSHOT_RPC_TIMEOUT_MS,
+    requestTimeoutMs: SDK_SNAPSHOT_RPC_TIMEOUT_MS,
     cwd,
     provider: route.provider,
     model: route.model,
@@ -620,7 +642,12 @@ async function runScenario(scenario: CorpusScenario): Promise<{
     const results: RunResult[] = []
     const sessionId = 'fixture-root-session'
     const liveSessions: (string | undefined)[] = [sessionId]
+    const startupStarted = performance.now()
     await harness.start()
+    const metricsPath = process.env.DSH_ROLEPLAY_METRICS_FILE
+    if (scenario.name === 'roleplay-state' && metricsPath !== undefined) {
+      await writeFile(`${metricsPath}.startup.json`, JSON.stringify({ startupMs: performance.now() - startupStarted }) + '\n')
+    }
     const subscription = harness.client.subscribeSessionTree(sessionId)
     const observe = (notification: HarnessNotification): void => {
       observedMethods.add(notification.method)
@@ -848,6 +875,28 @@ describe('TypeScript SDK snapshots over the jsonrpc runtime', () => {
       )
       reconcileCatalogCreationTimes(ordered.map(log => log.content), 'validate')
       const actualContext = contextOf(ordered, cwd)
+      if (scenario.name === 'roleplay-state') {
+        const rows = records(ordered[0]!.content)
+        const completed = rows.filter(row => row.type === 'turn/end')
+        expect(completed, ordered[0]!.content).toMatchObject([
+          { data: { turn: 1, reason: { kind: 'completed' } } },
+          { data: { turn: 2, reason: { kind: 'completed' } } },
+        ])
+        expect(rows.filter(row => row.type === 'roleplay/card')).toHaveLength(1)
+        const calls = rows.filter(row => row.type === 'tool/call')
+        expect(calls.map(row => row.data)).toMatchObject([
+          { turn: 2, name: 'roleplay_clothing_read', arguments: '{"fields":["上装"]}' },
+          { turn: 2, name: 'roleplay_relationship_update', arguments: '{"changes":[{"field":"好感","delta":2}]}' },
+        ])
+        const results = rows.filter(row => row.type === 'tool/result')
+        expect(results.map(row => row.data)).toMatchObject([
+          { message: { isError: false, content: [{ type: 'text', text: '{"上装":"蓝色围裙"}' }] } },
+          { message: { isError: false, content: [{ type: 'text', text: '已更新关系。' }] } },
+        ])
+        expect(rows.filter(row => row.type === 'roleplay/state').at(-1)).toMatchObject({
+          data: { category: 'relationship', source: 'model', values: { 好感: 22 } },
+        })
+      }
       if (scenario.name === 'dynamic-tool-updates') {
         const selectedTypes = new Set(['request/header', 'request/context', 'developer/message', 'tool/call', 'tool/result'])
         const events = results.flatMap(result => result.events).filter(event => selectedTypes.has(event.type))
@@ -925,12 +974,12 @@ describe('TypeScript SDK snapshots over the jsonrpc runtime', () => {
         }
       }
       if (assertions.expectedFinalResponse !== undefined) {
-        expect(results.at(-1)?.finalResponse, `${scenario.name}: final response`).toBe(assertions.expectedFinalResponse)
         const parent = ordered[0]
         if (parent === undefined) throw new Error(`${scenario.name}: no primary session log`)
         const turnEnds = records(parent.content).filter(record => record.type === 'turn/end')
         expect(turnEnds, `${scenario.name}: completed turns`).toHaveLength(results.length)
         for (const turnEnd of turnEnds) expect(turnEnd).toMatchObject({ data: { reason: { kind: 'completed' } } })
+        expect(results.at(-1)?.finalResponse, `${scenario.name}: final response`).toBe(assertions.expectedFinalResponse)
       }
 
       let expectedContents = retained && !refreshing

@@ -1,0 +1,33 @@
+/* Native composer and right-sidebar roleplay content. */
+.dock {
+  box-sizing: border-box;
+  width: calc(100% - 2 * var(--dsh-composer-side-clearance) - 4 * var(--dsh-composer-dock-inset));
+  max-width: calc(var(--dsh-composer-card-max-width) - 4 * var(--dsh-composer-dock-inset));
+  margin: 0 auto;
+  padding: 8px 0;
+  color: var(--dsw-alias-label-primary);
+  font-size: var(--dsh-content-font-size-secondary, 13px);
+  line-height: 1.5;
+}
+.toolbar, .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.toolbar > svg { flex: 0 0 auto; }
+.name { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.cardChoice { min-width: 0; max-width: 100%; }
+.skeleton { display: block; width: 120px; height: 13px; margin-top: 8px; border-radius: var(--dsw-radius-sm); background: var(--dsw-alias-bg-skeleton); }
+.hint { color: var(--dsw-alias-label-secondary); margin: 0; }
+.toolbar > .actions { margin-left: auto; }
+.panel { box-sizing: border-box; height: 100%; overflow: auto; padding: 16px; margin-right: 2px; color: var(--dsw-alias-label-primary); font-size: var(--dsh-content-font-size-secondary, 13px); line-height: 1.5; }
+.panel h2 { margin: 0 0 8px; font: inherit; font-weight: 500; }
+.cardContent { margin-top: 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.empty { padding: 24px 16px; color: var(--dsw-alias-label-secondary); font-size: var(--dsh-content-font-size-secondary, 13px); line-height: 1.5; }
+.fields { margin: 16px 0; }
+.field { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--dsw-alias-border-l3); }
+.field > div { flex: 1; min-width: 0; }
+.field dt { color: var(--dsw-alias-label-secondary); margin-bottom: 4px; }
+.field dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.editor { display: flex; flex-direction: column; gap: 12px; }
+.editor label { display: flex; flex-direction: column; gap: 6px; }
+.editor input, .editor textarea { box-sizing: border-box; width: 100%; padding: 8px; color: var(--dsw-alias-label-primary); background: var(--dsw-alias-bg-layer-1); border: 0.5px solid var(--dsw-alias-border-l3); border-radius: var(--dsw-radius-sm); font: inherit; }
+.editor textarea { min-height: 96px; resize: vertical; }
+.notice { margin: 0; color: var(--dsw-alias-label-secondary); }
+.tools { margin-top: 24px; }

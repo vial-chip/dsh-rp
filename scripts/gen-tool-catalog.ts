@@ -65,6 +65,8 @@ import * as StagehandBrowserTools from '@deepseek-ai/dsh-experimental-browser-us
 import type TeamService from '@deepseek-ai/dsh-experimental-agent-team'
 import * as ToolTeam from '@deepseek-ai/dsh-experimental-tool-agent-team'
 import * as ToolTodo from '@deepseek-ai/dsh-tool-todo'
+import RoleplayService from '@deepseek-ai/dsh-roleplay'
+import * as RoleplayTools from '@deepseek-ai/dsh-tool-roleplay'
 import type PluginManager from '@deepseek-ai/dsh-plugin-manager'
 import * as PluginManagerTools from '@deepseek-ai/dsh-plugin-manager/tools'
 import SandboxPolicy from '@deepseek-ai/dsh-sandbox-policy'
@@ -184,6 +186,41 @@ export interface ToolPackage {
  * guard proves it is exhaustive against the on-disk glob.
  */
 const TOOL_PACKAGES: ToolPackage[] = [
+  {
+    pkg: '@deepseek-ai/dsh-tool-roleplay',
+    dir: 'tool-roleplay',
+    source: Object.fromEntries(Object.keys(RoleplayTools).map(entry => [
+      `roleplay_${entry}`, `packages/roleplay/tool-roleplay/src/${entry.replace('_', '-')}.ts`,
+    ])),
+    requires: ['ctx.tools', 'ctx.roleplay', 'owning Agent session'],
+    writes: ['tool/call', 'roleplay/state (updates)', 'tool/result'],
+    async mount(ctx) {
+      await ctx.plugin(AgentRegistry)
+      await ctx.plugin(SessionStore)
+      await ctx.plugin(SkillRegistry)
+      await ctx.plugin(SqliteSessionQueryEngine, { path: ':memory:' })
+      await ctx.plugin(RoleplayService)
+      const session = ctx.sessions.create(SessionId('tool-catalog-roleplay'), { meta: { agentPreset: 'roleplay' } })
+      let scope: ReturnType<typeof createScope>
+      // Schema harvest needs session identity and scoped registrations, never a driving agent.
+      const unreachable = (): never => { throw new Error('gen-tool-catalog: roleplay execution is unreachable during schema harvest') }
+      const agent: Agent = {
+        id: session.id, session, options: {}, status: 'idle',
+        get ctx() { return scope.ctx },
+        get inbox() { return unreachable() },
+        cancel: unreachable, whenIdle: unreachable, runMaintenance: unreachable,
+        send: unreachable, followup: unreachable, steer: unreachable, inject: unreachable,
+      }
+      await ctx.plugin(Object.assign(async (inner: Context) => {
+        scope = createScope(inner, agent)
+        inner.effect(() => () => scope.dispose())
+        await inner.agents.register(agent)
+      }, { inject: ['tools', 'agents', 'roleplay'] }))
+      for (const entry of Object.values(RoleplayTools)) await ctx.plugin(entry)
+      catalogChildScopes.set(ctx, agent)
+    },
+    scope: ctx => catalogChildScopes.get(ctx) as Agent,
+  },
   {
     pkg: '@deepseek-ai/dsh-plugin-manager',
     dir: 'plugin-manager',

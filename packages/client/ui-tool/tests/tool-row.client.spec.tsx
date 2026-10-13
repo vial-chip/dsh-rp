@@ -12,7 +12,7 @@ import {
 } from '../src/client/tool/models/tool-call-model.ts'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { zh } from '@deepseek-ai/dsh-client-ui-conversation/src/client/locales.ts'
+import { zh, en } from '@deepseek-ai/dsh-client-ui-conversation/src/client/locales.ts'
 import { PartialArguments } from '@deepseek-ai/dsh-util-values'
 
 afterEach(() => {
@@ -535,6 +535,21 @@ describe('GenericToolCard', () => {
   const props = (toolName: string, block: StartedToolCall | ToolResultNode): GenericToolCardProps => ({
     loadImage: vi.fn(() => Promise.reject(new Error('not used'))),
     useDisclosure, callId: 'c1', toolName, ...('kind' in block ? { phase: 'result' as const, block: block } : { phase: block.phase, block: block }), openFile: vi.fn(), t,
+  })
+
+  it.each([
+    ['world_read', '读取世界'], ['world_update', '更新世界'],
+    ['body_read', '读取身体'], ['body_update', '更新身体'],
+    ['clothing_read', '读取服饰'], ['clothing_update', '更新服饰'],
+    ['relationship_read', '读取关系'], ['relationship_update', '更新关系'],
+  ])('shows the Chinese roleplay action for %s in both application locales', (suffix, title) => {
+    const name = `roleplay_${suffix}`
+    for (const dictionary of [zh, en]) {
+      const card = render(<GenericToolCard {...props(name, result({ call: { name, argsRaw: '{}' } }))} t={makeTranslate(dictionary, commonZh)} />)
+      expect(card.getByText(title)).toBeTruthy()
+      expect(card.container.textContent).not.toContain(name)
+      card.unmount()
+    }
   })
 
   it('renders the classified variant row from the frozen slice', () => {

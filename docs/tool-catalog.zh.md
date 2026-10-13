@@ -19,6 +19,7 @@
 
 | 工具包 | 模型可见名称 | 依赖 | 写入／影响 | 随产品发布的别名 | 部署说明 |
 | --- | --- | --- | --- | --- | --- |
+| `@deepseek-ai/dsh-tool-roleplay` | `roleplay_body_read`, `roleplay_body_update`, `roleplay_clothing_read`, `roleplay_clothing_update`, `roleplay_relationship_read`, `roleplay_relationship_update`, `roleplay_world_read`, `roleplay_world_update` | `ctx.tools`, `ctx.roleplay`, `owning Agent session` | `tool/call`, `roleplay/state (updates)`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-plugin-manager` | `plugin_manager` | `ctx.tools`, `ctx.pluginManager`, `ctx.sandboxPolicy` | `tool/call`, `tool/result`, `user/message` | - | - |
 | `@deepseek-ai/dsh-mcp-resources` | `list_mcp_resource_templates`, `list_mcp_resources`, `read_mcp_resource` | `ctx.tools`, `ctx.mcpResources` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-experimental-browser-use-stagehand-native` | `stagehand_act`、`stagehand_extract`、`stagehand_navigate`、`stagehand_observe`、`stagehand_screenshot`、`stagehand_tabs` | `ctx.browserUse`、`ctx.agents`、`ctx.tools`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | - |
@@ -49,6 +50,254 @@
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`、`ctx.workflowEngine`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents the script children)` | `tool/call`、`tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-workspace-dependencies` | `load_workspace_dependencies` | `ctx.tools` | `tool/call`, `tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`、`web_search` | `ctx.tools`、`ctx.web`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | web_search 和 web_fetch 将提供方选择置于 ctx.web 之后，使模型可见 schema 在更换后端时保持稳定。 |
+
+<a id="deepseek-aidsh-tool-roleplay"></a>
+
+## `@deepseek-ai/dsh-tool-roleplay`
+
+### `roleplay_body_read`
+
+读取已记录的身体状态，包括身体状况、临时情绪。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "description": "要读取的字段名称；省略时读取本类全部字段。",
+      "items": {
+        "type": "string",
+        "description": "字段名称，可使用中文。"
+      }
+    }
+  }
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/body-read.ts`](../packages/roleplay/tool-roleplay/src/body-read.ts)
+
+### `roleplay_body_update`
+
+更新身体状态，包括身体状况、临时情绪。只修改指定字段，保留其他字段；只返回简短确认。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "changes": {
+      "type": "array",
+      "description": "本次要更新的字段，每个字段只出现一次。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "字段名称，可使用中文。"
+          },
+          "value": {
+            "type": "string",
+            "description": "该字段的新状态文本。"
+          }
+        },
+        "required": [
+          "field",
+          "value"
+        ]
+      }
+    }
+  },
+  "required": [
+    "changes"
+  ]
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/body-update.ts`](../packages/roleplay/tool-roleplay/src/body-update.ts)
+
+### `roleplay_clothing_read`
+
+读取已记录的服饰状态，包括当前穿着。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "description": "要读取的字段名称；省略时读取本类全部字段。",
+      "items": {
+        "type": "string",
+        "description": "字段名称，可使用中文。"
+      }
+    }
+  }
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/clothing-read.ts`](../packages/roleplay/tool-roleplay/src/clothing-read.ts)
+
+### `roleplay_clothing_update`
+
+更新服饰状态，包括当前穿着。只修改指定字段，保留其他字段；只返回简短确认。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "changes": {
+      "type": "array",
+      "description": "本次要更新的字段，每个字段只出现一次。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "字段名称，可使用中文。"
+          },
+          "value": {
+            "type": "string",
+            "description": "该字段的新状态文本。"
+          }
+        },
+        "required": [
+          "field",
+          "value"
+        ]
+      }
+    }
+  },
+  "required": [
+    "changes"
+  ]
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/clothing-update.ts`](../packages/roleplay/tool-roleplay/src/clothing-update.ts)
+
+### `roleplay_relationship_read`
+
+读取已记录的关系状态，包括好感、信任等数值指标。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "description": "要读取的字段名称；省略时读取本类全部字段。",
+      "items": {
+        "type": "string",
+        "description": "字段名称，可使用中文。"
+      }
+    }
+  }
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/relationship-read.ts`](../packages/roleplay/tool-roleplay/src/relationship-read.ts)
+
+### `roleplay_relationship_update`
+
+增减已记录的关系指标，包括好感、信任等数值。正数增加，负数减少；未记录的指标从零开始。只返回简短确认。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "changes": {
+      "type": "array",
+      "description": "本次要增减的关系指标，每个指标只出现一次。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "关系指标名称，可使用中文。"
+          },
+          "delta": {
+            "type": "number",
+            "description": "增减量；正数增加，负数减少。"
+          }
+        },
+        "required": [
+          "field",
+          "delta"
+        ]
+      }
+    }
+  },
+  "required": [
+    "changes"
+  ]
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/relationship-update.ts`](../packages/roleplay/tool-roleplay/src/relationship-update.ts)
+
+### `roleplay_world_read`
+
+读取已记录的世界状态，包括时间、地点、天气、事件。可选择字段；省略字段时读取本类全部状态。未记录的字段不返回。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "description": "要读取的字段名称；省略时读取本类全部字段。",
+      "items": {
+        "type": "string",
+        "description": "字段名称，可使用中文。"
+      }
+    }
+  }
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/world-read.ts`](../packages/roleplay/tool-roleplay/src/world-read.ts)
+
+### `roleplay_world_update`
+
+更新世界状态，包括时间、地点、天气、事件。只修改指定字段，保留其他字段；只返回简短确认。
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "changes": {
+      "type": "array",
+      "description": "本次要更新的字段，每个字段只出现一次。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "字段名称，可使用中文。"
+          },
+          "value": {
+            "type": "string",
+            "description": "该字段的新状态文本。"
+          }
+        },
+        "required": [
+          "field",
+          "value"
+        ]
+      }
+    }
+  },
+  "required": [
+    "changes"
+  ]
+}
+```
+
+来源： [`packages/roleplay/tool-roleplay/src/world-update.ts`](../packages/roleplay/tool-roleplay/src/world-update.ts)
 
 <a id="deepseek-aidsh-plugin-manager"></a>
 

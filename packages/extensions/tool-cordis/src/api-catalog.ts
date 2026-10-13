@@ -1836,6 +1836,70 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'roleplay',
+    summary: 'Durable roleplay state and idle-only interaction operations.',
+    description: 'Durable roleplay state and idle-only interaction operations.',
+    methods: [
+      {
+        signature: 'stateOf(session: Session): RoleplayState | null',
+        description: 'Read saved state without opening a model request.',
+        parameters: [{ name: 'session', description: 'live or detached session.' }],
+        returns: 'saved state, or null for another mode.',
+      },
+      {
+        signature: '@Remote(\'get\') get(agent: Agent): RoleplayState | null',
+        description: 'Read the panel for a live session.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }],
+        returns: 'saved panel or null for another mode.',
+      },
+      {
+        signature: '@Remote(\'previewCard\') async previewCard(agent: Agent): Promise<RoleplayCard>',
+        description: 'Read the selected character instructions without freezing the card or adding events.',
+        parameters: [{ name: 'agent', description: 'viewing live roleplay agent.' }],
+        returns: 'frozen instructions, or the currently available selected card before first send.',
+      },
+      {
+        signature: '@Remote(\'listCards\') async listCards(agent: Agent): Promise<RoleplayCardSummary[]>',
+        description: 'List the bundled card and skills whose names begin with roleplay-.',
+        parameters: [{ name: 'agent', description: 'viewing live agent.' }],
+        returns: 'available character summaries with the bundled card first.',
+      },
+      {
+        signature: '@Remote(\'selectCard\') async selectCard(agent: Agent, name: string): Promise<void>',
+        description: 'Select a character before the first admitted interaction.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }, { name: 'name', description: 'character skill name.' }],
+      },
+      {
+        signature: 'read(agent: Agent, category: RoleplayCategory, fields?: readonly string[]): Record<string, string | number>',
+        description: 'Read only requested saved fields for a model tool.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }, { name: 'category', description: 'category to read.' }, { name: 'fields', description: 'selected fields; omitted selects all saved fields.' }],
+        returns: 'detached selected values without host bookkeeping.',
+      },
+      {
+        signature: 'update(agent: Agent, category: RoleplayCategory, patch: Readonly<Record<string, string | number>>): void',
+        description: 'Save model changes; relationship numbers are increments.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }, { name: 'category', description: 'category to update.' }, { name: 'patch', description: 'replacement text or relationship increments.' }],
+      },
+      {
+        signature: '@Remote(\'edit\') edit(agent: Agent, category: RoleplayCategory, patch: Readonly<Record<string, string | number>>): void',
+        description: 'Save human replacements without adding messages or waking the agent.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }, { name: 'category', description: 'category to edit.' }, { name: 'patch', description: 'direct replacement values, including relationship numbers.' }],
+      },
+      {
+        signature: '@Remote(\'undo\') async undo(agent: Agent): Promise<RoleplayUndoResult>',
+        description: 'Withdraw the latest completed interaction while idle.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }],
+        returns: 'original user input for the composer, when present.',
+      },
+      {
+        signature: '@Remote(\'regenerate\') async regenerate(agent: Agent): Promise<void>',
+        description: 'Withdraw the latest interaction and enqueue the same input again.',
+        parameters: [{ name: 'agent', description: 'owning live agent.' }],
+        throws: ['before withdrawal when the interaction has no original input message.'],
+      },
+    ],
+  },
+  {
     key: 'sandbox',
     summary: 'Abstract process-sandbox service.',
     description: 'Abstract process-sandbox service. confine must return enforcing argv or fail closed at wrap or runner-execution time; silent unconfined passthrough is forbidden. Functional probes arbitrate multi-runner chains and may be skipped for a sole candidate, whose own refusal remains the fail-closed end.',
@@ -6395,6 +6459,26 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   {
     name: 'ResumeAgentOptions',
     declaration: 'export interface ResumeAgentOptions {\n    readonly resumeSessionId: SessionId;\n    readonly parentAgent?: Agent;\n    readonly agentOptions?: AgentOptions;\n    readonly signal?: AbortSignal;\n    readonly setup?: AgentSetup;\n}',
+  },
+  {
+    name: 'RoleplayCard',
+    declaration: 'export interface RoleplayCard extends RoleplayCardSummary {\n    readonly content: string;\n}',
+  },
+  {
+    name: 'RoleplayCardSummary',
+    declaration: 'export interface RoleplayCardSummary {\n    readonly name: string;\n    readonly description: string;\n}',
+  },
+  {
+    name: 'RoleplayCategory',
+    declaration: 'export type RoleplayCategory = \'world\' | \'body\' | \'clothing\' | \'relationship\';',
+  },
+  {
+    name: 'RoleplayState',
+    declaration: 'export interface RoleplayState {\n    readonly card: RoleplayCard | null;\n    readonly selection: string | null;\n    readonly world: Readonly<Record<string, string>>;\n    readonly body: Readonly<Record<string, string>>;\n    readonly clothing: Readonly<Record<string, string>>;\n    readonly relationship: Readonly<Record<string, number>>;\n    readonly retractedTurns: readonly number[];\n}',
+  },
+  {
+    name: 'RoleplayUndoResult',
+    declaration: 'export interface RoleplayUndoResult {\n    readonly input: string | null;\n}',
   },
   {
     name: 'RpcId',

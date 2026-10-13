@@ -1,0 +1,58 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/roleplay/roleplay/README.md
+/:
+  en: aad6cfa90b3f3146
+  zh: fa339ff98bbcd2bd
+/deepseek-ai-dsh-roleplay:
+  en: bb15662f40675777
+  zh: 84159ab798dedd6e
+/deepseek-ai-dsh-roleplay/summary:
+  en: cf0a288ec67f0ca6
+  zh: 073176ef268d8246
+/deepseek-ai-dsh-roleplay/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/deepseek-ai-dsh-roleplay/use-this-package:
+  en: 10a2e8d732446c20
+  zh: 0fd01611a6c62b24
+/deepseek-ai-dsh-roleplay/use-this-package/configuration:
+  en: c0bb1d1c133fe987
+  zh: 95ed2fe2fc9864a1
+/deepseek-ai-dsh-roleplay/use-this-package/cards-and-state:
+  en: 986f4b5006621156
+  zh: 787754682746cd62
+/deepseek-ai-dsh-roleplay/use-this-package/undo-and-regeneration:
+  en: 69ccf756ab14f7c5
+  zh: 4fe9d94722fe87fa
+/deepseek-ai-dsh-roleplay/understand-the-implementation:
+  en: 96e737f1b37c4f33
+  zh: b824cefe8cd97e84
+/deepseek-ai-dsh-roleplay/further-exploration:
+  en: 9803c70492f0d944
+  zh: fab993788a8c0d65
+/deepseek-ai-dsh-roleplay/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/deepseek-ai-dsh-roleplay/model-experience/character-instructions:
+  en: 1a75c9fae8d84da8
+  zh: 53f0840a644e0770
+/deepseek-ai-dsh-roleplay/model-experience/character-instructions/what-the-model-sees:
+  en: f3f2d4e1c0e1f5b9
+  zh: 240f7717e01278a3
+/deepseek-ai-dsh-roleplay/model-experience/character-instructions/what-the-model-sees/stable-roleplay-instructions:
+  en: 0d2a27b4c94a5f58
+  zh: d060625901f9237b
+/deepseek-ai-dsh-roleplay/model-experience/character-instructions/token-effect:
+  en: 6a2917ce9bd59ce2
+  zh: 733baac3bf519b1a
+/deepseek-ai-dsh-roleplay/model-experience/character-instructions/kv-cache-effect:
+  en: 54b5a2f040627a00
+  zh: 2c18c48b58710e14
+/deepseek-ai-dsh-roleplay/known-limitations-and-deferred-work:
+  en: e03b76a8a6154f96
+  zh: 591bc90ea1288c3e
+/deepseek-ai-dsh-roleplay/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 8ec3e73528ddb1a6

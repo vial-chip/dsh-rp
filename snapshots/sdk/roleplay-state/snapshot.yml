@@ -1,0 +1,8 @@
+version: 1
+scenario: roleplay-state
+profile: sdk
+composition: sdk-roleplay
+recording: authored
+header:
+  class: sdk-roleplay
+  pin: true

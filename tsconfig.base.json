@@ -28,6 +28,13 @@
     // not declaration path aliases, keep each package/vendor source compiled
     // under its own tsconfig boundary.
     "paths": {
+      "@deepseek-ai/dsh-roleplay": ["./packages/roleplay/roleplay/src/index.ts"],
+      "@deepseek-ai/dsh-roleplay/types": ["./packages/roleplay/roleplay/src/types.ts"],
+      "@deepseek-ai/dsh-roleplay/client": ["./packages/roleplay/roleplay/src/client.ts"],
+      "@deepseek-ai/dsh-tool-roleplay": ["./packages/roleplay/tool-roleplay/src/index.ts"],
+      "@deepseek-ai/dsh-tool-roleplay/*": ["./packages/roleplay/tool-roleplay/src/*.ts"],
+      "@deepseek-ai/dsh-client-ui-roleplay": ["./packages/client/ui-roleplay/src/index.ts"],
+      "@deepseek-ai/dsh-client-ui-roleplay/client": ["./packages/client/ui-roleplay/src/client/index.ts"],
       "@deepseek-ai/dsh-client-product-analytics": ["./packages/client/product-analytics/src/index.ts"],
       "@deepseek-ai/dsh-client-product-analytics/types": ["./packages/client/product-analytics/src/events.ts"],
       "@deepseek-ai/dsh-client-product-analytics/client": ["./packages/client/product-analytics/src/client/index.ts"],

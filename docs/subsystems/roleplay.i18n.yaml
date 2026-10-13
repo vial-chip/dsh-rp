@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for roleplay.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/subsystems/roleplay.md
+/roleplay:
+  en: 48ed0bc57bd3cce2
+  zh: fdfaa9e4694482be
+/roleplay/saved-data:
+  en: 0369c873594c6a65
+  zh: ab2cd7d6e552693e
+/roleplay/saved-data/roleplaycategory:
+  en: d0b9094fa9ae644c
+  zh: d0b9094fa9ae644c
+/roleplay/saved-data/roleplaycardsummary:
+  en: e13a01e58301e4b3
+  zh: e13a01e58301e4b3
+/roleplay/saved-data/roleplaycard:
+  en: 9f8285cb62e5d342
+  zh: 9f8285cb62e5d342
+/roleplay/saved-data/roleplaystate:
+  en: 5fd0ce4ed834bf10
+  zh: 5fd0ce4ed834bf10
+/roleplay/saved-data/roleplaystatechange:
+  en: 4f405409bec8d8fc
+  zh: 4f405409bec8d8fc
+/roleplay/saved-data/roleplayundoresult:
+  en: 6929bad95519ede2
+  zh: 6929bad95519ede2
+/roleplay/durable-events:
+  en: 4b9280c61a9929af
+  zh: 087b9ef787e7cf0f

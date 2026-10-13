@@ -21,6 +21,8 @@ export type AgentPresetSettingsKey =
   | 'presetMinimalDescription'
   | 'presetCordisName'
   | 'presetCordisDescription'
+  | 'presetRoleplayName'
+  | 'presetRoleplayDescription'
   | 'inUse'
   | 'noDescription'
   | 'brokenBadge'
@@ -59,6 +61,8 @@ export const en: Record<AgentPresetSettingsKey, string> = {
   presetCordisName: 'Creator mode',
   presetCordisDescription:
     'Customize DSH through conversation. Let the agent write plugins that add features or UI, or combine tools and prompts to create your own mode.',
+  presetRoleplayName: '角色扮演',
+  presetRoleplayDescription: '选择一位同伴，开始日常互动，在侧栏查看和调整故事状态。',
 
   inUse: 'New task default',
 
@@ -100,6 +104,8 @@ export const zh: Record<AgentPresetSettingsKey, string> = {
   presetMinimalDescription: 'Agent 仅使用终端工具完成任务，适合测试和对比其基础表现。',
   presetCordisName: '创造模式',
   presetCordisDescription: '用对话定制 DSH：让 Agent 编写插件，添加新功能或界面；也能组合工具和提示词，创建自己的模式。',
+  presetRoleplayName: '角色扮演',
+  presetRoleplayDescription: '选择一位同伴，开始日常互动，在侧栏查看和调整故事状态。',
 
   inUse: '新任务默认',
 

@@ -9,8 +9,35 @@
   en: 6cc2cd9ced70bb09
   zh: 1c0e6cb4ba2ed637
 /tool-schema-catalog/tool-package-map:
-  en: 75120ef94b3c2830
-  zh: c5db28dd6853e91a
+  en: 5733a8ca9c4519e9
+  zh: 61fdfee3a2d2c4fc
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay:
+  en: 3f317fc773e0a5c2
+  zh: 3f317fc773e0a5c2
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-body-read:
+  en: 477c57970847d20d
+  zh: 5b1e5b2d43ffb514
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-body-update:
+  en: f212d4c583eb84ff
+  zh: 26758a3609a90acf
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-clothing-read:
+  en: 73b7927a9d57fd0e
+  zh: 528c753cec3548ca
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-clothing-update:
+  en: cbff2d3555ffacb2
+  zh: c163edd66fe17847
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-relationship-read:
+  en: 7aace1d1498a75a9
+  zh: 3a4e3ea0a5de8e38
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-relationship-update:
+  en: 451af81ffbe63035
+  zh: 4bfacc7ce83e09a1
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-world-read:
+  en: 17a4db177a1e6845
+  zh: 8873c877199c94c0
+/tool-schema-catalog/deepseek-ai-dsh-tool-roleplay/roleplay-world-update:
+  en: 67ca11bc53845250
+  zh: fdb29c349a5c7de5
 /tool-schema-catalog/deepseek-ai-dsh-plugin-manager:
   en: e0143916bb634762
   zh: e0143916bb634762

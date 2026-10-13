@@ -592,6 +592,27 @@ def test_client_keeps_unmatched_notifications_available_globally_while_subscribe
         assert notification.payload["sessionId"] == "other"
 
 
+@pytest.mark.parametrize("event_type,data", [
+    ("roleplay/card-selection", {"name": "角色"}),
+    ("roleplay/card", {"name": "角色", "description": "角色卡", "content": "继续。"}),
+    ("roleplay/state", {"category": "world", "values": {"地点": "书房"}, "fields": ["地点"], "source": "human", "turn": None}),
+    ("roleplay/retract", {"turn": 2, "state": {"card": None, "selection": None, "world": {}, "body": {}, "clothing": {}, "relationship": {}, "retractedTurns": [2]}}),
+    ("user/message", {"id": "withdrawal", "role": "user", "content": [], "source": {"kind": "roleplay-withdrawal"}}),
+])
+def test_session_subscription_preserves_roleplay_events(event_type: str, data: dict[str, object]) -> None:
+    client = HarnessClient()
+    event = {"type": event_type, "seq": 4, "time": 1, "data": data}
+    with client.subscribe_session_notifications("main") as subscription:
+        client._handle_message({
+            "jsonrpc": "2.0", "method": "session.event",
+            "params": {"sessionId": "main", "event": event},
+        })
+        notification = subscription.next()
+        assert notification.method == "session.event"
+        assert notification.payload == {"sessionId": "main", "event": event}
+    assert client._notifications.qsize() == 0
+
+
 def test_session_subscription_keeps_descendant_relationships_across_subscriptions() -> None:
     client = HarnessClient()
     with client.subscribe_session_notifications("main") as first:

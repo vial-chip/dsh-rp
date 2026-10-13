@@ -88,6 +88,7 @@ type RoutedChatNodeOwner = ChatNodeOwnerProps & { readonly node: ChatNode }
 
 interface TestSessionSnapshot extends SessionSnapshot {
   readonly testInbox?: InboxState
+  readonly testRoleplay?: { readonly retractedTurns: readonly number[] }
 }
 
 function sessionSnapshot(overrides: Partial<TestSessionSnapshot> = {}): TestSessionSnapshot {
@@ -426,7 +427,8 @@ function makeHarness(
     useWorkspaces: emptyWorkspaces(),
     useProjection: (key: string) => {
       const inbox = useTestSession(snapshot => snapshot.testInbox)
-      return key === 'inbox' ? inbox : outlineValue
+      const roleplay = useTestSession(snapshot => snapshot.testRoleplay)
+      return key === 'inbox' ? inbox : key === 'roleplay' ? roleplay : outlineValue
     },
     useInput: (() => { throw new Error('unused') }),
     inputActions: {
@@ -646,6 +648,17 @@ describe('Chat node rendering', () => {
 })
 
 describe('ChatView', () => {
+  it('hides withdrawn roleplay interactions while retaining their original node data', () => {
+    const snapshot = chatSnapshotFixture({ nodes: [userInTurn(1, '做饭吧', 1), assistant(2, '我来洗菜', 1), userInTurn(3, '去散步吧', 2), assistant(4, '一起出门', 2)] })
+    const h = makeHarness({}, {}, snapshot)
+    const view = render(<h.ChatView {...h.props} />)
+    expect(view.getByText('一起出门')).toBeTruthy()
+    act(() => { h.set({ testRoleplay: { retractedTurns: [2] } }) })
+    expect(view.queryByText('去散步吧')).toBeNull()
+    expect(view.queryByText('一起出门')).toBeNull()
+    expect(view.getByText('我来洗菜')).toBeTruthy()
+    expect(snapshot.nodes.get(snapshot.order.at(-1)!)).toBeDefined()
+  })
   it('renders only referenced Nodes without deleting unreferenced Node data', () => {
     const snapshot = chatSnapshotFixture({ nodes: [user(1, 'included'), user(2, 'omitted')] })
     const h = makeHarness({}, {}, snapshot)

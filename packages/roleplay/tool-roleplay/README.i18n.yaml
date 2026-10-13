@@ -1,0 +1,52 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/roleplay/tool-roleplay/README.md
+/:
+  en: 831a3c664126062e
+  zh: ca99aadd74dbc5e3
+/deepseek-ai-dsh-tool-roleplay:
+  en: 70a9955b8e4e8710
+  zh: fc40a020deff24d2
+/deepseek-ai-dsh-tool-roleplay/summary:
+  en: 5d0e6f984a5ca108
+  zh: f59d7b3fcf2107cd
+/deepseek-ai-dsh-tool-roleplay/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 5acc0d3807846b6e
+/deepseek-ai-dsh-tool-roleplay/use-this-package:
+  en: c9920d94ca3cf645
+  zh: 066b643337fe3fbd
+/deepseek-ai-dsh-tool-roleplay/use-this-package/minimal-configuration:
+  en: 1eb34ecd5f3d9557
+  zh: 5107b6d09d7a87fd
+/deepseek-ai-dsh-tool-roleplay/use-this-package/state-operations:
+  en: dd6fbbb64c751cae
+  zh: 6eca3dd4e8056d70
+/deepseek-ai-dsh-tool-roleplay/understand-the-implementation:
+  en: dc21f4b718d05def
+  zh: aa4383558bbb981d
+/deepseek-ai-dsh-tool-roleplay/further-exploration:
+  en: d471277bd2e8902a
+  zh: ccd1d789e0aac694
+/deepseek-ai-dsh-tool-roleplay/model-experience:
+  en: 215e7ba838619b7b
+  zh: 215e7ba838619b7b
+/deepseek-ai-dsh-tool-roleplay/model-experience/tool-schemas-and-results:
+  en: cadc497841430a21
+  zh: 7f9fecab587cf547
+/deepseek-ai-dsh-tool-roleplay/model-experience/tool-schemas-and-results/what-the-model-sees:
+  en: e9d66ee8e9babc38
+  zh: f0adee12f93f1802
+/deepseek-ai-dsh-tool-roleplay/model-experience/tool-schemas-and-results/token-effect:
+  en: 2db10b604aaa04f0
+  zh: 5229dac4c0509f8e
+/deepseek-ai-dsh-tool-roleplay/model-experience/tool-schemas-and-results/kv-cache-effect:
+  en: 19a3544d99d4fe93
+  zh: 7be3b1ad6fdbb9cf
+/deepseek-ai-dsh-tool-roleplay/known-limitations-and-deferred-work:
+  en: 4935923fe95687c3
+  zh: e3d95bfe15dad5c3
+/deepseek-ai-dsh-tool-roleplay/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 8ec3e73528ddb1a6

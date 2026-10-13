@@ -16,6 +16,7 @@ import { PendingSteeringBubble, PendingSubmissionBubble } from './MessageItem.ts
 import { ChatNodeSeat } from './ChatNodeSeat.tsx'
 import { ChatGroupSeat } from './ChatGroupSeat.tsx'
 import { chatRenderKey } from './render-entry.ts'
+import { isWithdrawnLocation, withdrawnTurns } from './withdrawn-turns.ts'
 import { assertNever } from '@deepseek-ai/dsh-util-values'
 import { TurnNavigator } from './TurnNavigator.tsx'
 import { RunningStatus } from './RunningStatus.tsx'
@@ -103,15 +104,27 @@ export function ChatView({
   sessionId, openFile, openSkill, openExternalLink, loadOlder, loadThrough, loadImage, inspectCall, chatScroll, forkAt, fileMentions,
   usePresentation, useProjection, t,
 }: ChatViewSlotProps) {
-  const order = useChat(s => s.order)
-  const groupedEntries = useConversation(snapshot => snapshot.views.grouped('chat')?.entries)
-  const entries = useMemo<readonly RenderEntry[]>(() => groupedEntries
-    ?? order.map(key => ({ kind: 'node', key: key as NodeKey })), [groupedEntries, order])
+  const allOrder = useChat(s => s.order)
+  const roleplay = useProjection('roleplay')
+  const withdrawn = useMemo(() => withdrawnTurns(roleplay), [roleplay])
   const nodeStore = useChat(s => s.nodes)
+  const order = useMemo(() => withdrawn.size === 0 ? allOrder
+    : allOrder.filter(key => !isWithdrawnLocation(nodeStore.get(key)?.location, withdrawn)), [allOrder, nodeStore, withdrawn])
+  const grouped = useConversation(snapshot => snapshot.views.grouped('chat'))
+  const groupedEntries = useConversation(snapshot => snapshot.views.grouped('chat')?.entries)
+  const entries = useMemo<readonly RenderEntry[]>(() => {
+    if (grouped === undefined) return order.map(key => ({ kind: 'node', key: key as NodeKey }))
+    if (withdrawn.size === 0) return groupedEntries ?? []
+    return (groupedEntries ?? []).filter(entry => entry.kind === 'node'
+      ? !isWithdrawnLocation(nodeStore.get(entry.key)?.location, withdrawn)
+      : !withdrawn.has(grouped.groupSource(entry.key).getSnapshot()?.data.turn ?? -1))
+  }, [grouped, groupedEntries, order, nodeStore, withdrawn])
   // The rail's items are accumulated in the Chat snapshot, so this selector is
   // both the data and its change signal: the array identity moves only when a
   // Turn enters, leaves, or changes its preview.
-  const turnNavigationItems = useChat(s => s.navigation.items())
+  const allTurnNavigationItems = useChat(s => s.navigation.items())
+  const turnNavigationItems = useMemo(() => withdrawn.size === 0 ? allTurnNavigationItems
+    : allTurnNavigationItems.filter(item => !withdrawn.has(item.turn)), [allTurnNavigationItems, withdrawn])
   const latestTurnAnchor = turnNavigationItems.at(-1)?.anchorKey
   const runningStartTime = useChatNode(latestTurnAnchor ?? '', (node) => {
     const location = node?.location
@@ -123,8 +136,8 @@ export function ChatView({
   // conversation snapshot never carries projection values).
   const turnOutline = useProjection('turnOutline')
   const railItems = useMemo(
-    () => mergeTurnRailItems(turnNavigationItems, turnOutline),
-    [turnNavigationItems, turnOutline],
+    () => mergeTurnRailItems(turnNavigationItems, turnOutline).filter(item => !withdrawn.has(item.turn)),
+    [turnNavigationItems, turnOutline, withdrawn],
   )
   const inbox = useProjection('inbox') as unknown as InboxState | undefined
   // Workspace root off the session list row: path summaries display relative to it.
