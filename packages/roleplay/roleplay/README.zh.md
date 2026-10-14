@@ -103,8 +103,9 @@ Web 组合挂载此服务并提供 `roleplay` 预设。自定义组合将其与 
 
 普通状态修改保持指令与角色卡前缀不变。撤回改变有效历史。供应商缓存命中取决于供应商及请求顺序。
 
-<a id="known-limitations-and-deferred-work"></a>
 ## 已知限制与延期工作
+
+<a id="known-limitations-and-deferred-work"></a>
 
 已记录状态独立于叙事和模型记忆。
 

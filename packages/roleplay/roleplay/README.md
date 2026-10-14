@@ -103,8 +103,9 @@ Instructions and card content contribute fixed input per request. Human edits ad
 
 Ordinary state changes leave the instruction and card prefix unchanged. Withdrawals change effective history. Provider cache hits depend on the provider and request sequence.
 
-<a id="known-limitations-and-deferred-work"></a>
 ## Known Limitations and Deferred Work
+
+<a id="known-limitations-and-deferred-work"></a>
 
 Recorded state is independent of narration and model recollection.
 
